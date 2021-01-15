@@ -1,0 +1,29 @@
+{
+    "name": "morozov/river-raid",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "doctrine/coding-standard": "^9.0.0",
+        "phpstan/phpstan": "^0.12.81",
+        "phpstan/phpstan-strict-rules": "^0.12.9",
+        "vimeo/psalm": "^4.6.3"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.0"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "RiverRaid\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RiverRaid\\Tests\\": "tests"
+        }
+    }
+}
