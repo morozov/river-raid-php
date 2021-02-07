@@ -16,11 +16,15 @@ $levels   = $provider->getTerrainLevels();
 $unpackScene = new UnpackScene($profiles);
 
 foreach ($levels->levels as $i => $level) {
+    $image = imagecreate(256, 1024);
+    $paper = imagecolorallocate($image, 0, 0, 197);
+    $ink   = imagecolorallocate($image, 0, 197, 0);
     $scene = $unpackScene($level);
 
-    foreach (array_reverse($scene->terrainLeft) as $width) {
-        echo str_repeat('░', $width), PHP_EOL;
+    foreach ($scene->terrainLeft as $y => $width) {
+        imageline($image, 0, 1023 - $y, $width, 1023 - $y, $ink);
     }
 
-    break;
+    imagepng($image, __DIR__ . '/../build/level' . sprintf('%02d', $i + 1) . '.png');
+    imagedestroy($image);
 }

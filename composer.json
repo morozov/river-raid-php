@@ -2,7 +2,8 @@
     "name": "morozov/river-raid",
     "license": "MIT",
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "ext-gd": "*"
     },
     "require-dev": {
         "doctrine/coding-standard": "^9.0.0",
