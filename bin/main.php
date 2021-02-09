@@ -21,8 +21,12 @@ foreach ($levels->levels as $i => $level) {
     $ink   = imagecolorallocate($image, 0, 197, 0);
     $scene = $unpackScene($level);
 
-    foreach ($scene->terrainLeft as $y => $width) {
-        imageline($image, 0, 1023 - $y, $width, 1023 - $y, $ink);
+    foreach ($scene->terrainLeft as $y => $x) {
+        imageline($image, 0, 1023 - $y, $x, 1023 - $y, $ink);
+    }
+
+    foreach ($scene->terrainRight as $y => $x) {
+        imageline($image, 256, 1023 - $y, $x, 1023 - $y, $ink);
     }
 
     imagepng($image, __DIR__ . '/../build/level' . sprintf('%02d', $i + 1) . '.png');
