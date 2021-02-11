@@ -9,4 +9,6 @@ interface Provider
     public function getTerrainLevels(): TerrainLevels;
 
     public function getTerrainProfiles(): TerrainProfiles;
+
+    public function getIslandRows(): IslandRows;
 }

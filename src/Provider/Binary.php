@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace RiverRaid\Provider;
 
+use RiverRaid\IslandRow;
+use RiverRaid\IslandRows;
 use RiverRaid\Provider;
 use RiverRaid\TerrainLevel;
 use RiverRaid\TerrainLevels;
@@ -22,13 +24,16 @@ use function unpack;
 
 class Binary implements Provider
 {
+    private const ADDRESS_ISLAND_ROWS      = 0xC600;
     private const ADDRESS_LEVEL_TERRAIN    = 0x9500;
     private const ADDRESS_TERRAIN_PROFILES = 0x8063;
 
-    private const SIZE_LEVELS     = 0x30;
-    private const SIZE_LEVEL_ROWS = 0x40;
-    private const SIZE_PROFILE    = 0x10;
-    private const SIZE_PROFILES   = 0x0F;
+    private const SIZE_ISLAND_ROW  = 0x03;
+    private const SIZE_ISLAND_ROWS = 0x23;
+    private const SIZE_LEVELS      = 0x30;
+    private const SIZE_LEVEL_ROWS  = 0x40;
+    private const SIZE_PROFILE     = 0x10;
+    private const SIZE_PROFILES    = 0x0F;
 
     /** @var resource */
     private $stream;
@@ -70,6 +75,19 @@ class Binary implements Provider
         return new TerrainProfiles($profiles);
     }
 
+    public function getIslandRows(): IslandRows
+    {
+        $this->seek(self::ADDRESS_ISLAND_ROWS);
+
+        $rows = [];
+
+        for ($i = 0; $i < self::SIZE_ISLAND_ROWS; $i++) {
+            $rows[] = $this->readIslandRow();
+        }
+
+        return new IslandRows($rows);
+    }
+
     private function readTerrainLevel(): TerrainLevel
     {
         $rows = [];
@@ -95,6 +113,13 @@ class Binary implements Provider
     {
         return new TerrainProfile(
             $this->readBytes(self::SIZE_PROFILE),
+        );
+    }
+
+    private function readIslandRow(): IslandRow
+    {
+        return new IslandRow(
+            ...$this->readBytes(self::SIZE_ISLAND_ROW),
         );
     }
 
