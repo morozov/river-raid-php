@@ -38,19 +38,18 @@ final class UnpackScene
             foreach ($terrainProfile->values as $rowLine => $value) {
                 $coordinateLeft = $terrainRow->byte3 + $value;
 
-                if ($mode === 1) {
-                    $coordinateRight = 2 * $terrainRow->byte2 - $coordinateLeft;
-                } elseif ($mode === 2) {
-                    $coordinateRight = $terrainRow->byte2 + $coordinateLeft;
-                } else {
-                    throw new LogicException();
-                }
-
                 $terrainLeft[]  = $coordinateLeft - 6;
-                $terrainRight[] = $coordinateRight;
+                $terrainRight[] = $this->calcOtherSide($terrainRow->byte2, $coordinateLeft, $mode);
 
                 if ($islandProfile !== null && $islandRow !== null) {
-                    $islands[$levelLine] = [0x80, 0x80 + $islandRow->byte2 + $islandProfile->values[$rowLine] + 10];
+                    $side1 = 0x80 + $islandRow->byte2 + $islandProfile->values[$rowLine];
+                    $side2 = $this->calcOtherSide(
+                        0x3C,
+                        $islandRow->byte2 + $islandProfile->values[$rowLine],
+                        $islandRow->byte3
+                    );
+
+                    $islands[$levelLine] = [$side2, $side1 + 10];
                 }
 
                 $levelLine++;
@@ -58,5 +57,18 @@ final class UnpackScene
         }
 
         return new Scene($terrainLeft, $terrainRight, $islands);
+    }
+
+    private function calcOtherSide(int $c, int $d, int $mode): int
+    {
+        if ($mode === 1) {
+            return 2 * $c - $d;
+        }
+
+        if ($mode === 2) {
+            return $c + $d;
+        }
+
+        throw new LogicException();
     }
 }
