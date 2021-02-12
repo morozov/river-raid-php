@@ -3,18 +3,18 @@
 
 declare(strict_types=1);
 
-use RiverRaid\Provider\Binary;
+use RiverRaid\Data\Provider\Binary;
 use RiverRaid\UnpackScene;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $provider = new Binary(__DIR__ . '/../river-raid.bin', 0x4000);
 
-$profiles    = $provider->getTerrainProfiles();
-$levels      = $provider->getTerrainLevels();
-$icelandRows = $provider->getIslandRows();
+$profiles         = $provider->getTerrainProfiles();
+$levels           = $provider->getTerrainLevels();
+$icelandFragments = $provider->getIslandFragments();
 
-$unpackScene = new UnpackScene($profiles, $icelandRows);
+$unpackScene = new UnpackScene($profiles, $icelandFragments);
 
 foreach ($levels->levels as $i => $level) {
     $image = imagecreate(256, 1024);
@@ -22,23 +22,25 @@ foreach ($levels->levels as $i => $level) {
     $ink   = imagecolorallocate($image, 0, 197, 0);
     $scene = $unpackScene($level);
 
-    foreach ($scene->terrainLeft as $y => $x) {
-        terrainLine($image, 0, $x, $y, $ink);
-    }
+    foreach ($scene->terrainLines as $y => $terrainLine) {
+        $riverBankLines = $terrainLine->riverBankLines;
+        $islandLine     = $terrainLine->islandLine;
 
-    foreach ($scene->terrainRight as $y => $x) {
-        terrainLine($image, 256, $x, $y, $ink);
-    }
+        terrainLine($image, 0, $riverBankLines->left, $y, $ink);
+        terrainLine($image, $riverBankLines->right, 255, $y, $ink);
 
-    foreach ($scene->islands as $y => [$x1, $x2]) {
-        terrainLine($image, $x1, $x2, $y, $ink);
+        if ($islandLine === null) {
+            continue;
+        }
+
+        terrainLine($image, $islandLine->left, $islandLine->right, $y, $ink);
     }
 
     imagepng($image, __DIR__ . '/../build/level' . sprintf('%02d', $i + 1) . '.png');
     imagedestroy($image);
 }
 
-function terrainLine($image, $x1, $x2, $y, $ink): void
+function terrainLine($image, int $x1, int $x2, int $y, $ink): void
 {
     imageline($image, $x1, 1023 - $y, $x2, 1023 - $y, $ink);
 }

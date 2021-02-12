@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace RiverRaid;
+namespace RiverRaid\Data;
 
-final class TerrainLevels
+/**
+ * @psalm-immutable
+ */
+final class TerrainLevelList
 {
     /** @param list<TerrainLevel> $levels */
     public function __construct(

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace RiverRaid\Provider;
+namespace RiverRaid\Data\Provider;
 
-use RiverRaid\IslandRow;
-use RiverRaid\IslandRows;
-use RiverRaid\Provider;
-use RiverRaid\TerrainLevel;
-use RiverRaid\TerrainLevels;
-use RiverRaid\TerrainProfile;
-use RiverRaid\TerrainProfiles;
-use RiverRaid\TerrainRow;
+use RiverRaid\Data\IslandFragment;
+use RiverRaid\Data\IslandFragmentRegistry;
+use RiverRaid\Data\Provider;
+use RiverRaid\Data\TerrainFragment;
+use RiverRaid\Data\TerrainLevel;
+use RiverRaid\Data\TerrainLevelList;
+use RiverRaid\Data\TerrainProfile;
+use RiverRaid\Data\TerrainProfileRegistry;
 use RuntimeException;
 
 use function array_values;
@@ -22,18 +22,18 @@ use function ord;
 use function strlen;
 use function unpack;
 
-class Binary implements Provider
+final class Binary implements Provider
 {
-    private const ADDRESS_ISLAND_ROWS      = 0xC600;
+    private const ADDRESS_ISLAND_FRAGMENTS = 0xC600;
     private const ADDRESS_LEVEL_TERRAIN    = 0x9500;
     private const ADDRESS_TERRAIN_PROFILES = 0x8063;
 
-    private const SIZE_ISLAND_ROW  = 0x03;
-    private const SIZE_ISLAND_ROWS = 0x23;
-    private const SIZE_LEVELS      = 0x30;
-    private const SIZE_LEVEL_ROWS  = 0x40;
-    private const SIZE_PROFILE     = 0x10;
-    private const SIZE_PROFILES    = 0x0F;
+    private const SIZE_ISLAND_FRAGMENT         = 0x03;
+    private const SIZE_ISLAND_FRAGMENTS        = 0x23;
+    private const SIZE_LEVELS                  = 0x30;
+    private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
+    private const SIZE_TERRAIN_PROFILE         = 0x10;
+    private const SIZE_TERRAIN_PROFILES        = 0x0F;
 
     /** @var resource */
     private $stream;
@@ -49,7 +49,7 @@ class Binary implements Provider
         $this->stream = $stream;
     }
 
-    public function getTerrainLevels(): TerrainLevels
+    public function getTerrainLevels(): TerrainLevelList
     {
         $this->seek(self::ADDRESS_LEVEL_TERRAIN);
 
@@ -59,49 +59,49 @@ class Binary implements Provider
             $levels[] = $this->readTerrainLevel();
         }
 
-        return new TerrainLevels($levels);
+        return new TerrainLevelList($levels);
     }
 
-    public function getTerrainProfiles(): TerrainProfiles
+    public function getTerrainProfiles(): TerrainProfileRegistry
     {
         $this->seek(self::ADDRESS_TERRAIN_PROFILES);
 
         $profiles = [];
 
-        for ($i = 0; $i < self::SIZE_PROFILES; $i++) {
+        for ($i = 0; $i < self::SIZE_TERRAIN_PROFILES; $i++) {
             $profiles[] = $this->readTerrainProfile();
         }
 
-        return new TerrainProfiles($profiles);
+        return new TerrainProfileRegistry($profiles);
     }
 
-    public function getIslandRows(): IslandRows
+    public function getIslandFragments(): IslandFragmentRegistry
     {
-        $this->seek(self::ADDRESS_ISLAND_ROWS);
+        $this->seek(self::ADDRESS_ISLAND_FRAGMENTS);
 
-        $rows = [];
+        $fragments = [];
 
-        for ($i = 0; $i < self::SIZE_ISLAND_ROWS; $i++) {
-            $rows[] = $this->readIslandRow();
+        for ($i = 0; $i < self::SIZE_ISLAND_FRAGMENTS; $i++) {
+            $fragments[] = $this->readIslandFragment();
         }
 
-        return new IslandRows($rows);
+        return new IslandFragmentRegistry($fragments);
     }
 
     private function readTerrainLevel(): TerrainLevel
     {
-        $rows = [];
+        $fragments = [];
 
-        for ($i = 0; $i < self::SIZE_LEVEL_ROWS; $i++) {
-            $rows[] = $this->readTerrainRow();
+        for ($i = 0; $i < self::SIZE_LEVEL_TERRAIN_FRAGMENTS; $i++) {
+            $fragments[] = $this->readTerrainFragment();
         }
 
-        return new TerrainLevel($rows);
+        return new TerrainLevel($fragments);
     }
 
-    private function readTerrainRow(): TerrainRow
+    private function readTerrainFragment(): TerrainFragment
     {
-        return new TerrainRow(
+        return new TerrainFragment(
             $this->readByte(),
             $this->readByte(),
             $this->readByte(),
@@ -112,14 +112,14 @@ class Binary implements Provider
     private function readTerrainProfile(): TerrainProfile
     {
         return new TerrainProfile(
-            $this->readBytes(self::SIZE_PROFILE),
+            $this->readBytes(self::SIZE_TERRAIN_PROFILE),
         );
     }
 
-    private function readIslandRow(): IslandRow
+    private function readIslandFragment(): IslandFragment
     {
-        return new IslandRow(
-            ...$this->readBytes(self::SIZE_ISLAND_ROW),
+        return new IslandFragment(
+            ...$this->readBytes(self::SIZE_ISLAND_FRAGMENT),
         );
     }
 

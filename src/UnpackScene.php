@@ -5,67 +5,92 @@ declare(strict_types=1);
 namespace RiverRaid;
 
 use LogicException;
+use RiverRaid\Data\Fragment;
+use RiverRaid\Data\IslandFragmentRegistry;
+use RiverRaid\Data\TerrainLevel;
+use RiverRaid\Data\TerrainProfile;
+use RiverRaid\Data\TerrainProfileRegistry;
+use RiverRaid\Scene\IslandLine;
+use RiverRaid\Scene\RiverBankLines;
+use RiverRaid\Scene\TerrainLine;
 
+/**
+ * @psalm-immutable
+ */
 final class UnpackScene
 {
+    private const RENDERING_MODE_SYMMETRICAL = 1;
+    private const RENDERING_MODE_PARALLEL    = 2;
+
     public function __construct(
-        private TerrainProfiles $profiles,
-        private IslandRows $islandRows,
+        public TerrainProfileRegistry $terrainProfiles,
+        public IslandFragmentRegistry $islandFragments,
     ) {
     }
 
     public function __invoke(TerrainLevel $level): Scene
     {
-        $terrainLeft  = [];
-        $terrainRight = [];
-        $islands      = [];
-        $levelLine    = 0;
+        $terrainLines = [];
 
-        foreach ($level->rows as $i => $terrainRow) {
-            $terrainProfile = $this->profiles->profiles[$terrainRow->byte1 - 1];
+        foreach ($level->fragments as $terrainFragment) {
+            $terrainProfile = $this->getFragmentTerrainProfile($terrainFragment);
 
-            $mode        = $terrainRow->byte4 & 3;
-            $islandIndex = $terrainRow->byte4 >> 2;
+            $islandFragmentNumber = $terrainFragment->getIslandFragmentNumber();
 
-            $islandProfile = null;
-            $islandRow     = null;
+            $islandProfile  = null;
+            $islandFragment = null;
 
-            if ($islandIndex > 0) {
-                $islandRow     = $this->islandRows->rows[$islandIndex - 1];
-                $islandProfile = $this->profiles->profiles[$islandRow->byte1 - 1];
+            if ($islandFragmentNumber > 0) {
+                $islandFragment = $this->islandFragments->getFragment($islandFragmentNumber);
+                $islandProfile  = $this->getFragmentTerrainProfile($islandFragment);
             }
 
-            foreach ($terrainProfile->values as $rowLine => $value) {
-                $coordinateLeft = $terrainRow->byte3 + $value;
+            foreach ($terrainProfile->values as $line => $value) {
+                $coordinateLeft = $terrainFragment->byte3 + $value;
 
-                $terrainLeft[]  = $coordinateLeft - 6;
-                $terrainRight[] = $this->calcOtherSide($terrainRow->byte2, $coordinateLeft, $mode);
+                $riverBankLine = new RiverBankLines(
+                    $coordinateLeft - 6,
+                    $this->calcOtherSide(
+                        $terrainFragment->byte2,
+                        $coordinateLeft,
+                        $terrainFragment->getRenderingMode()
+                    ),
+                );
 
-                if ($islandProfile !== null && $islandRow !== null) {
-                    $side1 = 0x80 + $islandRow->byte2 + $islandProfile->values[$rowLine];
+                $islandLine = null;
+
+                if ($islandProfile !== null && $islandFragment !== null) {
+                    $side1 = 0x80 + $islandFragment->byte2 + $islandProfile->values[$line];
                     $side2 = $this->calcOtherSide(
                         0x3C,
-                        $islandRow->byte2 + $islandProfile->values[$rowLine],
-                        $islandRow->byte3
+                        $islandFragment->byte2 + $islandProfile->values[$line],
+                        $islandFragment->getRenderingMode()
                     );
 
-                    $islands[$levelLine] = [$side2, $side1 + 10];
+                    $islandLine = new IslandLine($side2, $side1 + 10);
                 }
 
-                $levelLine++;
+                $terrainLines[] = new TerrainLine($riverBankLine, $islandLine);
             }
         }
 
-        return new Scene($terrainLeft, $terrainRight, $islands);
+        return new Scene($terrainLines);
+    }
+
+    private function getFragmentTerrainProfile(Fragment $fragment): TerrainProfile
+    {
+        return $this->terrainProfiles->getProfile(
+            $fragment->getProfileNumber(),
+        );
     }
 
     private function calcOtherSide(int $c, int $d, int $mode): int
     {
-        if ($mode === 1) {
+        if ($mode === self::RENDERING_MODE_SYMMETRICAL) {
             return 2 * $c - $d;
         }
 
-        if ($mode === 2) {
+        if ($mode === self::RENDERING_MODE_PARALLEL) {
             return $c + $d;
         }
 

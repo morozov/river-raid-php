@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace RiverRaid;
+namespace RiverRaid\Data;
 
+/**
+ * @psalm-immutable
+ */
 final class TerrainProfile
 {
     /**
