@@ -40,7 +40,8 @@ foreach ($levels->levels as $i => $level) {
     imagedestroy($image);
 }
 
-function terrainLine($image, int $x1, int $x2, int $y, $ink): void
+function terrainLine(GdImage $image, int $x1, int $x2, int $y, int $ink): void
 {
-    imageline($image, $x1, 1023 - $y, $x2, 1023 - $y, $ink);
+    $y = 1024 - 1 - ($y - 48 + 1024) % 1024;
+    imageline($image, $x1, $y, $x2, $y, $ink);
 }
