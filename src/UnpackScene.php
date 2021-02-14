@@ -7,7 +7,7 @@ namespace RiverRaid;
 use LogicException;
 use RiverRaid\Data\Fragment;
 use RiverRaid\Data\IslandFragmentRegistry;
-use RiverRaid\Data\TerrainLevel;
+use RiverRaid\Data\Level;
 use RiverRaid\Data\TerrainProfile;
 use RiverRaid\Data\TerrainProfileRegistry;
 use RiverRaid\Scene\IslandLine;
@@ -28,11 +28,11 @@ final class UnpackScene
     ) {
     }
 
-    public function __invoke(TerrainLevel $level): Scene
+    public function __invoke(Level $level): Scene
     {
         $terrainLines = [];
 
-        foreach ($level->fragments as $terrainFragment) {
+        foreach ($level->terrainFragments as $terrainFragment) {
             $terrainProfile = $this->getFragmentTerrainProfile($terrainFragment);
 
             $islandFragmentNumber = $terrainFragment->getIslandFragmentNumber();

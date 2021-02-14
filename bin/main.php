@@ -11,7 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $provider = new Binary(__DIR__ . '/../river-raid.bin', 0x4000);
 
 $profiles         = $provider->getTerrainProfiles();
-$levels           = $provider->getTerrainLevels();
+$levels           = $provider->getLevels();
 $icelandFragments = $provider->getIslandFragments();
 
 $unpackScene = new UnpackScene($profiles, $icelandFragments);

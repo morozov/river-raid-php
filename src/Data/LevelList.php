@@ -7,13 +7,11 @@ namespace RiverRaid\Data;
 /**
  * @psalm-immutable
  */
-final class TerrainLevel
+final class LevelList
 {
-    /**
-     * @param list<TerrainFragment> $fragments
-     */
+    /** @param list<Level> $levels */
     public function __construct(
-        public array $fragments,
+        public array $levels,
     ) {
     }
 }

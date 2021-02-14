@@ -6,7 +6,7 @@ namespace RiverRaid\Data;
 
 interface Provider
 {
-    public function getTerrainLevels(): TerrainLevelList;
+    public function getLevels(): LevelList;
 
     public function getTerrainProfiles(): TerrainProfileRegistry;
 
