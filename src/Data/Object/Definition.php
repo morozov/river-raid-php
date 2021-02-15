@@ -12,13 +12,13 @@ use RiverRaid\Data\Entity;
  */
 final class Definition
 {
-    private const OBJECT_HELICOPTER_REGULAR  = 1;
-    private const OBJECT_SHIP                = 2;
-    private const OBJECT_HELICOPTER_ADVANCED = 3;
-    private const OBJECT_TANK                = 4;
-    private const OBJECT_FIGHTER             = 5;
-    private const OBJECT_BALLOON             = 6;
-    private const OBJECT_FUEL_STATION        = 7;
+    public const OBJECT_HELICOPTER_REGULAR  = 1;
+    public const OBJECT_SHIP                = 2;
+    public const OBJECT_HELICOPTER_ADVANCED = 3;
+    public const OBJECT_TANK                = 4;
+    public const OBJECT_FIGHTER             = 5;
+    public const OBJECT_BALLOON             = 6;
+    public const OBJECT_FUEL_STATION        = 7;
 
     public function __construct(
         private int $byte1,

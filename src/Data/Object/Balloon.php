@@ -11,4 +11,8 @@ use RiverRaid\Data\Entity;
  */
 final class Balloon implements Entity
 {
+    public function toString(): string
+    {
+        return 'Balloon';
+    }
 }

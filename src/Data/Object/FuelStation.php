@@ -11,4 +11,8 @@ use RiverRaid\Data\Entity;
  */
 final class FuelStation implements Entity
 {
+    public function toString(): string
+    {
+        return 'Fuel station';
+    }
 }

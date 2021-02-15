@@ -6,4 +6,5 @@ namespace RiverRaid\Data;
 
 interface Entity
 {
+    public function toString(): string;
 }
