@@ -44,7 +44,10 @@ final class Definition
             self::OBJECT_HELICOPTER_ADVANCED,
             self::OBJECT_TANK,
             self::OBJECT_FIGHTER,
-                => new ThreeByOneTileEnemy($type),
+            => new ThreeByOneTileEnemy(
+                $type,
+                $this->byte1 & 0x40
+            ),
             self::OBJECT_BALLOON => new Balloon(),
             self::OBJECT_FUEL_STATION => new FuelStation(),
             default => throw new LogicException(),

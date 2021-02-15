@@ -24,10 +24,14 @@ use function unpack;
 
 final class Binary implements Provider
 {
-    private const ADDRESS_ISLAND_FRAGMENTS = 0xC600;
-    private const ADDRESS_LEVEL_TERRAIN    = 0x9500;
-    private const ADDRESS_TERRAIN_PROFILES = 0x8063;
-    private const ADDRESS_LEVEL_OBJECTS     = 0xC800;
+    private const ADDRESS_ISLAND_FRAGMENTS   = 0xC600;
+    private const ADDRESS_LEVEL_TERRAIN       = 0x9500;
+    private const ADDRESS_TERRAIN_PROFILES    = 0x8063;
+    private const ADDRESS_LEVEL_OBJECTS       = 0xC800;
+    private const ADDRESS_SPRITE_3BY1_ENEMY   = 0x85B3;
+    private const ADDRESS_SPRITE_BALLOON      = 0x8972;
+    private const ADDRESS_SPRITE_FUEL_STATION = 0x8A86;
+    private const ADDRESS_SPRITE_ROCK         = 0x84A1;
 
     private const SIZE_ISLAND_FRAGMENT         = 0x03;
     private const SIZE_ISLAND_FRAGMENTS        = 0x23;

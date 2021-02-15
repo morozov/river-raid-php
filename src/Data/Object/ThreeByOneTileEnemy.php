@@ -13,6 +13,7 @@ final class ThreeByOneTileEnemy implements Entity
 {
     public function __construct(
         public int $type,
+        public int $orientation,
     ) {
     }
 }
