@@ -10,9 +10,12 @@ use RiverRaid\Data\Level;
 use RiverRaid\Data\LevelList;
 use RiverRaid\Data\Object\Definition;
 use RiverRaid\Data\Provider;
+use RiverRaid\Data\Sprite;
+use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Data\TerrainFragment;
 use RiverRaid\Data\TerrainProfile;
 use RiverRaid\Data\TerrainProfileRegistry;
+use RiverRaid\Platform\Attributes;
 use RuntimeException;
 
 use function array_values;
@@ -21,6 +24,8 @@ use function fread;
 use function fseek;
 use function strlen;
 use function unpack;
+
+use const SEEK_CUR;
 
 final class Binary implements Provider
 {
@@ -39,6 +44,13 @@ final class Binary implements Provider
     private const SIZE_LEVEL_OBJECTS           = 0x80;
     private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
     private const SIZE_OBJECT                  = 0x02;
+    private const SIZE_SPRITE_3BY1_ENEMY       = 0x18;
+    private const SIZE_SPRITE_BALLOON          = 0x20;
+    private const SIZE_SPRITE_FUEL_STATION     = 0x32;
+    private const SIZE_SPRITE_ROCK             = 0x30;
+    private const SIZE_SPRITE_ROCKS            = 0x04;
+    private const SIZE_SPRITE_FRAMES           = 0x04;
+    private const SIZE_TYPE_3BY1_ENEMY         = 0x05;
     private const SIZE_TERRAIN_FRAGMENT        = 0x04;
     private const SIZE_TERRAIN_PROFILE         = 0x10;
     private const SIZE_TERRAIN_PROFILES        = 0x0F;
@@ -94,6 +106,16 @@ final class Binary implements Provider
         }
 
         return new IslandFragmentRegistry($fragments);
+    }
+
+    public function getSprites(): SpriteRepository
+    {
+        return new SpriteRepository(
+            $this->read3By1EnemyBytes(),
+            $this->readBalloonBytes(),
+            $this->readFuelStationBytes(),
+            $this->readRockBytes()
+        );
     }
 
     /**
@@ -184,9 +206,90 @@ final class Binary implements Provider
         );
     }
 
+    /**
+     * @return list<list<Sprite>>
+     */
+    private function read3By1EnemyBytes(): array
+    {
+        $this->seek(self::ADDRESS_SPRITE_3BY1_ENEMY);
+
+        $bytes = [];
+
+        foreach ([0, 1] as $orientation) {
+            $orientationBytes = [];
+
+            for ($type = 1; $type <= self::SIZE_TYPE_3BY1_ENEMY; $type++) {
+                $orientationBytes[] = new Sprite(
+                    3,
+                    new Attributes(
+                        match ($type) {
+                            Definition::OBJECT_SHIP => 0x0D,
+                            Definition::OBJECT_TANK => 0x20,
+                            Definition::OBJECT_FIGHTER => 0x0C,
+                            default => 0x0E,
+                        }
+                    ),
+                    $this->readBytes(self::SIZE_SPRITE_3BY1_ENEMY)
+                );
+                $this->advance(self::SIZE_SPRITE_3BY1_ENEMY * (self::SIZE_SPRITE_FRAMES - 1));
+            }
+
+            $bytes[] = $orientationBytes;
+        }
+
+        return $bytes;
+    }
+
+    private function readBalloonBytes(): Sprite
+    {
+        $this->seek(self::ADDRESS_SPRITE_BALLOON);
+
+        return new Sprite(
+            2,
+            new Attributes(0x0E),
+            $this->readBytes(self::SIZE_SPRITE_BALLOON)
+        );
+    }
+
+    private function readFuelStationBytes(): Sprite
+    {
+        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION);
+
+        return new Sprite(
+            2,
+            new Attributes(0x0B),
+            $this->readBytes(self::SIZE_SPRITE_FUEL_STATION)
+        );
+    }
+
+    /**
+     * @return list<Sprite>
+     */
+    private function readRockBytes(): array
+    {
+        $this->seek(self::ADDRESS_SPRITE_ROCK);
+
+        $bytes = [];
+
+        for ($i = 0; $i < self::SIZE_SPRITE_ROCKS; $i++) {
+            $bytes[] = new Sprite(
+                3,
+                new Attributes(0x14),
+                $this->readBytes(self::SIZE_SPRITE_ROCK)
+            );
+        }
+
+        return $bytes;
+    }
+
     private function seek(int $address): void
     {
         fseek($this->stream, $address - $this->startAddress);
+    }
+
+    private function advance(int $offset): void
+    {
+        fseek($this->stream, $offset, SEEK_CUR);
     }
 
     /**

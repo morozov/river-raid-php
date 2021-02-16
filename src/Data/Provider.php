@@ -11,4 +11,6 @@ interface Provider
     public function getTerrainProfiles(): TerrainProfileRegistry;
 
     public function getIslandFragments(): IslandFragmentRegistry;
+
+    public function getSprites(): SpriteRepository;
 }

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Object;
 
+use GdImage;
 use LogicException;
 use RiverRaid\Data\Entity;
+use RiverRaid\Data\SpriteRepository;
 
-/**
- * @psalm-immutable
- */
 final class Definition
 {
     public const OBJECT_HELICOPTER_REGULAR  = 1;
@@ -26,7 +25,18 @@ final class Definition
     ) {
     }
 
-    public function newObject(): ?Entity
+    public function render(SpriteRepository $sprites, GdImage $image, int $y): void
+    {
+        $object = $this->newObject();
+
+        if ($object === null) {
+            return;
+        }
+
+        $object->render($sprites, $image, $this->byte2, $y);
+    }
+
+    private function newObject(): ?Entity
     {
         if ($this->byte1 === 0) {
             return null;
@@ -46,7 +56,7 @@ final class Definition
             self::OBJECT_FIGHTER,
             => new ThreeByOneTileEnemy(
                 $type,
-                $this->byte1 & 0x40
+                ($this->byte1 >> 6) & 0x01
             ),
             self::OBJECT_BALLOON => new Balloon(),
             self::OBJECT_FUEL_STATION => new FuelStation(),
