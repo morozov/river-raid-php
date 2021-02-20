@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace RiverRaid\Scene;
 
-/**
- * @psalm-immutable
- */
+use RiverRaid\Image;
+
 final class IslandLine
 {
     public function __construct(
-        public int $left,
-        public int $right,
+        private int $left,
+        private int $right,
     ) {
+    }
+
+    public function render(Image $image, int $y, int $ink): void
+    {
+        $image->drawHorizontalLine($this->left, $this->right, $y, $ink);
     }
 }

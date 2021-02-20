@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-use GdImage;
 use LogicException;
 use RiverRaid\BinaryUtils;
 use RiverRaid\Data\Entity\Balloon;
 use RiverRaid\Data\Entity\FuelStation;
 use RiverRaid\Data\Entity\Rock;
 use RiverRaid\Data\Entity\ThreeByOneTileEnemy;
+use RiverRaid\Image;
 
 /**
  * Entity slot contains an entity definition and position. A slot can be empty.
@@ -46,7 +46,7 @@ final class EntitySlot
         $this->entity = $this->newEntity($definition);
     }
 
-    public function render(SpriteRepository $sprites, GdImage $image, int $y): void
+    public function render(SpriteRepository $sprites, Image $image, int $y): void
     {
         if ($this->entity === null) {
             return;

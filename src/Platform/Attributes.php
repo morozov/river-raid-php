@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Platform;
 
-use GdImage;
+use RiverRaid\Image;
 
 final class Attributes
 {
@@ -22,17 +22,17 @@ final class Attributes
         $this->paperColor = new Color(($attributes >> 3) & 0x07);
     }
 
-    public function allocateInkColor(GdImage $image): int
+    public function allocateInkColor(Image $image): int
     {
         return $this->allocateColor($image, $this->inkColor);
     }
 
-    public function allocatePaperColor(GdImage $image): int
+    public function allocatePaperColor(Image $image): int
     {
         return $this->allocateColor($image, $this->paperColor);
     }
 
-    private function allocateColor(GdImage $image, Color $color): int
+    private function allocateColor(Image $image, Color $color): int
     {
         return $color->allocate($image, self::BRIGHTNESS);
     }

@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-use GdImage;
+use RiverRaid\Image;
 use RiverRaid\Platform\Attributes;
-
-use function imagecolorat;
-use function imagesetpixel;
 
 final class Sprite
 {
@@ -22,7 +19,7 @@ final class Sprite
     ) {
     }
 
-    public function render(GdImage $image, int $x, int $y): void
+    public function render(Image $image, int $x, int $y): void
     {
         $width = self::SIZE_TILE * $this->width;
 
@@ -36,11 +33,11 @@ final class Sprite
                 if (($byte & 0x80) !== 0) {
                     $color = $ink;
 
-                    if (imagecolorat($image, $px + $x, $y) === $ink) {
+                    if ($image->getPixelColor($px + $x, $y) === $ink) {
                         $color = $paper;
                     }
 
-                    imagesetpixel($image, $px + $x, $y, $color);
+                    $image->setPixelColor($px + $x, $y, $color);
                 }
 
                 $byte <<= 1;

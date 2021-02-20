@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-use GdImage;
+use RiverRaid\Image;
 
 interface Entity
 {
@@ -18,5 +18,5 @@ interface Entity
 
     public function toString(): string;
 
-    public function render(SpriteRepository $repository, GdImage $image, int $x, int $y): void;
+    public function render(SpriteRepository $repository, Image $image, int $x, int $y): void;
 }

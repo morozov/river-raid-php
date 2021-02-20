@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Platform;
 
-use GdImage;
-
-use function imagecolorallocate;
+use RiverRaid\Image;
 
 final class Color
 {
@@ -26,10 +24,9 @@ final class Color
         $this->green = ($color >> 2) & 0x01;
     }
 
-    public function allocate(GdImage $image, int $brightness): int
+    public function allocate(Image $image, int $brightness): int
     {
-        return imagecolorallocate(
-            $image,
+        return $image->allocateColor(
             $this->red * $brightness,
             $this->green * $brightness,
             $this->blue * $brightness
