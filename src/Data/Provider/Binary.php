@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Provider;
 
+use RiverRaid\Data\Entity;
+use RiverRaid\Data\EntitySlot;
 use RiverRaid\Data\IslandFragment;
 use RiverRaid\Data\IslandFragmentRegistry;
 use RiverRaid\Data\Level;
 use RiverRaid\Data\LevelList;
-use RiverRaid\Data\Object\Definition;
 use RiverRaid\Data\Provider;
 use RiverRaid\Data\Sprite;
 use RiverRaid\Data\SpriteRepository;
@@ -32,7 +33,7 @@ final class Binary implements Provider
     private const ADDRESS_ISLAND_FRAGMENTS   = 0xC600;
     private const ADDRESS_LEVEL_TERRAIN       = 0x9500;
     private const ADDRESS_TERRAIN_PROFILES    = 0x8063;
-    private const ADDRESS_LEVEL_OBJECTS       = 0xC800;
+    private const ADDRESS_LEVEL_ENTITY_SLOTS  = 0xC800;
     private const ADDRESS_SPRITE_3BY1_ENEMY   = 0x85B3;
     private const ADDRESS_SPRITE_BALLOON      = 0x8972;
     private const ADDRESS_SPRITE_FUEL_STATION = 0x8A86;
@@ -41,9 +42,9 @@ final class Binary implements Provider
     private const SIZE_ISLAND_FRAGMENT         = 0x03;
     private const SIZE_ISLAND_FRAGMENTS        = 0x23;
     private const SIZE_LEVELS                  = 0x30;
-    private const SIZE_LEVEL_OBJECTS           = 0x80;
+    private const SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
     private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
-    private const SIZE_OBJECT                  = 0x02;
+    private const SIZE_ENTITY_SLOT             = 0x02;
     private const SIZE_SPRITE_3BY1_ENEMY       = 0x18;
     private const SIZE_SPRITE_BALLOON          = 0x20;
     private const SIZE_SPRITE_FUEL_STATION     = 0x32;
@@ -72,11 +73,11 @@ final class Binary implements Provider
     public function getLevels(): LevelList
     {
         $terrains = $this->readTerrainsByLevel();
-        $objects  = $this->readObjectsByLevel();
+        $entities = $this->readEntitySlotsByLevel();
         $levels   = [];
 
         for ($i = 0; $i < self::SIZE_LEVELS; $i++) {
-            $levels[] = new Level($terrains[$i], $objects[$i]);
+            $levels[] = new Level($terrains[$i], $entities[$i]);
         }
 
         return new LevelList($levels);
@@ -135,16 +136,16 @@ final class Binary implements Provider
     }
 
     /**
-     * @return list<list<Definition>>
+     * @return list<list<EntitySlot>>
      */
-    private function readObjectsByLevel(): array
+    private function readEntitySlotsByLevel(): array
     {
-        $this->seek(self::ADDRESS_LEVEL_OBJECTS);
+        $this->seek(self::ADDRESS_LEVEL_ENTITY_SLOTS);
 
         $levels = [];
 
         for ($i = 0; $i < self::SIZE_LEVELS; $i++) {
-            $levels[] = $this->readLevelObjects();
+            $levels[] = $this->readLevelEntitySlots();
         }
 
         return $levels;
@@ -165,17 +166,17 @@ final class Binary implements Provider
     }
 
     /**
-     * @return list<Definition>
+     * @return list<EntitySlot>
      */
-    private function readLevelObjects(): array
+    private function readLevelEntitySlots(): array
     {
-        $rows = [];
+        $slots = [];
 
-        for ($i = 0; $i < self::SIZE_LEVEL_OBJECTS; $i++) {
-            $rows[] = $this->readObject();
+        for ($i = 0; $i < self::SIZE_LEVEL_ENTITY_SLOTS; $i++) {
+            $slots[] = $this->readEntitySlot();
         }
 
-        return $rows;
+        return $slots;
     }
 
     private function readTerrainFragment(): TerrainFragment
@@ -185,10 +186,10 @@ final class Binary implements Provider
         );
     }
 
-    private function readObject(): Definition
+    private function readEntitySlot(): EntitySlot
     {
-        return new Definition(
-            ...$this->readBytes(self::SIZE_OBJECT),
+        return new EntitySlot(
+            ...$this->readBytes(self::SIZE_ENTITY_SLOT),
         );
     }
 
@@ -223,9 +224,9 @@ final class Binary implements Provider
                     3,
                     new Attributes(
                         match ($type) {
-                            Definition::OBJECT_SHIP => 0x0D,
-                            Definition::OBJECT_TANK => 0x20,
-                            Definition::OBJECT_FIGHTER => 0x0C,
+                            Entity::TYPE_SHIP => 0x0D,
+                            Entity::TYPE_TANK => 0x20,
+                            Entity::TYPE_FIGHTER => 0x0C,
                             default => 0x0E,
                         }
                     ),

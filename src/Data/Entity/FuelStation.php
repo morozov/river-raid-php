@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RiverRaid\Data\Object;
+namespace RiverRaid\Data\Entity;
 
 use GdImage;
 use RiverRaid\Data\Entity;

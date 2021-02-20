@@ -40,8 +40,8 @@ foreach ($levels->levels as $i => $level) {
         terrainLine($image, $islandLine->left, $islandLine->right, $y, $ink);
     }
 
-    foreach ($level->objectDefinitions as $y => $objectDefinition) {
-        $objectDefinition->render($sprites, $image, convertY($y * 8));
+    foreach ($level->slots as $y => $slot) {
+        $slot->render($sprites, $image, convertY($y * 8));
     }
 
     imagepng($image, __DIR__ . '/../build/level' . sprintf('%02d', $i + 1) . '.png');

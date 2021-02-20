@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RiverRaid\Data\Object;
+namespace RiverRaid\Data\Entity;
 
 use GdImage;
 use RiverRaid\Data\Entity;
@@ -13,7 +13,7 @@ use function sprintf;
 final class Rock implements Entity
 {
     public function __construct(
-        public int $type,
+        private int $type,
     ) {
     }
 
