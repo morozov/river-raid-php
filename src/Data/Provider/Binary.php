@@ -30,14 +30,25 @@ use const SEEK_CUR;
 
 final class Binary implements Provider
 {
-    private const ADDRESS_ISLAND_FRAGMENTS   = 0xC600;
-    private const ADDRESS_LEVEL_TERRAIN       = 0x9500;
-    private const ADDRESS_TERRAIN_PROFILES    = 0x8063;
-    private const ADDRESS_LEVEL_ENTITY_SLOTS  = 0xC800;
-    private const ADDRESS_SPRITE_3BY1_ENEMY   = 0x85B3;
-    private const ADDRESS_SPRITE_BALLOON      = 0x8972;
-    private const ADDRESS_SPRITE_FUEL_STATION = 0x8A86;
-    private const ADDRESS_SPRITE_ROCK         = 0x84A1;
+    private const ADDRESS_ISLAND_FRAGMENTS  = 0xC600;
+    private const ADDRESS_LEVEL_TERRAIN      = 0x9500;
+    private const ADDRESS_TERRAIN_PROFILES   = 0x8063;
+    private const ADDRESS_LEVEL_ENTITY_SLOTS = 0xC800;
+    private const ADDRESS_SPRITE_3BY1_ENEMY  = 0x85B3;
+
+    private const ADDRESS_SPRITE_BALLOON_SIZE       = 0x7083;
+    private const ADDRESS_SPRITE_BALLOON_WIDTH      = 0x7086;
+    private const ADDRESS_SPRITE_BALLOON_ATTRIBUTES = 0x7088;
+    private const ADDRESS_SPRITE_BALLOON_PIXELS     = 0x8972;
+
+    private const ADDRESS_SPRITE_FUEL_STATION_WIDTH      = 0x7064;
+    private const ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES = 0x7066;
+    private const ADDRESS_SPRITE_FUEL_STATION_PIXELS     = 0x8A86;
+
+    private const ADDRESS_SPRITE_ROCK_SIZE       = 0x6FC3;
+    private const ADDRESS_SPRITE_ROCK_WIDTH      = 0x6FDE;
+    private const ADDRESS_SPRITE_ROCK_ATTRIBUTES = 0x6FE0;
+    private const ADDRESS_SPRITE_ROCK_PIXELS     = 0x84A1;
 
     private const SIZE_ISLAND_FRAGMENT         = 0x03;
     private const SIZE_ISLAND_FRAGMENTS        = 0x23;
@@ -46,9 +57,7 @@ final class Binary implements Provider
     private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
     private const SIZE_ENTITY_SLOT             = 0x02;
     private const SIZE_SPRITE_3BY1_ENEMY       = 0x18;
-    private const SIZE_SPRITE_BALLOON          = 0x20;
     private const SIZE_SPRITE_FUEL_STATION     = 0x32;
-    private const SIZE_SPRITE_ROCK             = 0x30;
     private const SIZE_SPRITE_ROCKS            = 0x04;
     private const SIZE_SPRITE_FRAMES           = 0x04;
     private const SIZE_TYPE_3BY1_ENEMY         = 0x05;
@@ -114,8 +123,8 @@ final class Binary implements Provider
         return new SpriteRepository(
             $this->read3By1EnemyBytes(),
             $this->readBalloonBytes(),
-            $this->readFuelStationBytes(),
-            $this->readRockBytes()
+            $this->readFuelStationSprite(),
+            $this->readRockSprites()
         );
     }
 
@@ -243,22 +252,37 @@ final class Binary implements Provider
 
     private function readBalloonBytes(): Sprite
     {
-        $this->seek(self::ADDRESS_SPRITE_BALLOON);
+        $this->seek(self::ADDRESS_SPRITE_BALLOON_SIZE);
+        $size = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_BALLOON_WIDTH);
+        $width = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_BALLOON_ATTRIBUTES);
+        $attributes = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_BALLOON_PIXELS);
 
         return new Sprite(
-            2,
-            new Attributes(0x0E),
-            $this->readBytes(self::SIZE_SPRITE_BALLOON)
+            $width,
+            new Attributes($attributes),
+            $this->readBytes($size)
         );
     }
 
-    private function readFuelStationBytes(): Sprite
+    private function readFuelStationSprite(): Sprite
     {
-        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION);
+        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION_WIDTH);
+        $width = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES);
+        $attributes = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION_PIXELS);
 
         return new Sprite(
-            2,
-            new Attributes(0x0B),
+            $width,
+            new Attributes($attributes),
             $this->readBytes(self::SIZE_SPRITE_FUEL_STATION)
         );
     }
@@ -266,21 +290,30 @@ final class Binary implements Provider
     /**
      * @return list<Sprite>
      */
-    private function readRockBytes(): array
+    private function readRockSprites(): array
     {
-        $this->seek(self::ADDRESS_SPRITE_ROCK);
+        $this->seek(self::ADDRESS_SPRITE_ROCK_SIZE);
+        $size = $this->readByte();
 
-        $bytes = [];
+        $this->seek(self::ADDRESS_SPRITE_ROCK_WIDTH);
+        $width = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_ROCK_ATTRIBUTES);
+        $attributes = $this->readByte();
+
+        $this->seek(self::ADDRESS_SPRITE_ROCK_PIXELS);
+
+        $sprites = [];
 
         for ($i = 0; $i < self::SIZE_SPRITE_ROCKS; $i++) {
-            $bytes[] = new Sprite(
-                3,
-                new Attributes(0x14),
-                $this->readBytes(self::SIZE_SPRITE_ROCK)
+            $sprites[] = new Sprite(
+                $width,
+                new Attributes($attributes),
+                $this->readBytes($size)
             );
         }
 
-        return $bytes;
+        return $sprites;
     }
 
     private function seek(int $address): void
@@ -314,5 +347,13 @@ final class Binary implements Provider
         $bytes = unpack('C*', $chars);
 
         return array_values($bytes);
+    }
+
+    /**
+     * @return positive-int
+     */
+    private function readByte(): int
+    {
+        return $this->readBytes(1)[0];
     }
 }
