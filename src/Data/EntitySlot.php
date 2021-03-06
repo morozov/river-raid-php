@@ -46,7 +46,7 @@ final class EntitySlot
         $this->entity = $this->newEntity($definition);
     }
 
-    public function render(SpriteRepository $sprites, Image $image, int $y): void
+    public function render(SpriteRepository $sprites, int $y, Image $image): void
     {
         if ($this->entity === null) {
             return;

@@ -6,11 +6,13 @@ namespace RiverRaid\Data;
 
 interface Provider
 {
-    public function getLevels(): LevelList;
+    public function getTerrainFragments(): TerrainFragmentRepository;
 
-    public function getTerrainProfiles(): TerrainProfileRegistry;
+    public function getEntitySlots(): EntitySlotRepository;
 
-    public function getIslandFragments(): IslandFragmentRegistry;
+    public function getTerrainProfiles(): TerrainProfileRepository;
+
+    public function getIslandFragments(): IslandFragmentRepository;
 
     public function getSprites(): SpriteRepository;
 }

@@ -7,7 +7,7 @@ namespace RiverRaid\Data;
 /**
  * @psalm-immutable
  */
-final class IslandFragmentRegistry
+final class IslandFragmentRepository
 {
     /** @param list<IslandFragment> $fragments */
     public function __construct(

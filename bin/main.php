@@ -3,39 +3,26 @@
 
 declare(strict_types=1);
 
+use RiverRaid\Data\Level;
 use RiverRaid\Data\Provider\Binary;
 use RiverRaid\Image;
-use RiverRaid\UnpackScene;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+const SIZE_LEVELS = 0x30;
+
 $provider = new Binary(__DIR__ . '/../river-raid.bin', 0x4000);
 
-$profiles         = $provider->getTerrainProfiles();
-$levels           = $provider->getLevels();
+$terrainFragments = $provider->getTerrainFragments();
+$entitySlots      = $provider->getEntitySlots();
+$terrainProfiles  = $provider->getTerrainProfiles();
 $icelandFragments = $provider->getIslandFragments();
 $sprites          = $provider->getSprites();
 
-$unpackScene = new UnpackScene($profiles, $icelandFragments);
-
-foreach ($levels->levels as $i => $level) {
+for ($i = 0; $i < SIZE_LEVELS; $i++) {
     $image = new Image(256, 1024);
-    $ink   = $image->allocateColor(0, 197, 0);
-
-    $scene = $unpackScene($level);
-
-    foreach ($scene->terrainLines as $y => $terrainLine) {
-        $terrainLine->render($image, convertY($y), $ink);
-    }
-
-    foreach ($level->slots as $y => $slot) {
-        $slot->render($sprites, $image, convertY($y * 8));
-    }
+    $level = new Level($i);
+    $level->render($terrainFragments, $entitySlots, $terrainProfiles, $icelandFragments, $sprites, $image);
 
     $image->save(__DIR__ . '/../build/level' . sprintf('%02d', $i + 1) . '.png');
-}
-
-function convertY(int $y): int
-{
-    return 1024 - 1 - ($y - 48 + 1024) % 1024;
 }

@@ -6,16 +6,16 @@ namespace RiverRaid\Data\Provider;
 
 use RiverRaid\Data\Entity;
 use RiverRaid\Data\EntitySlot;
+use RiverRaid\Data\EntitySlotRepository;
 use RiverRaid\Data\IslandFragment;
-use RiverRaid\Data\IslandFragmentRegistry;
-use RiverRaid\Data\Level;
-use RiverRaid\Data\LevelList;
+use RiverRaid\Data\IslandFragmentRepository;
 use RiverRaid\Data\Provider;
 use RiverRaid\Data\Sprite;
 use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Data\TerrainFragment;
+use RiverRaid\Data\TerrainFragmentRepository;
 use RiverRaid\Data\TerrainProfile;
-use RiverRaid\Data\TerrainProfileRegistry;
+use RiverRaid\Data\TerrainProfileRepository;
 use RiverRaid\Platform\Attributes;
 use RuntimeException;
 
@@ -50,20 +50,21 @@ final class Binary implements Provider
     private const ADDRESS_SPRITE_ROCK_ATTRIBUTES = 0x6FE0;
     private const ADDRESS_SPRITE_ROCK_PIXELS     = 0x84A1;
 
-    private const SIZE_ISLAND_FRAGMENT         = 0x03;
-    private const SIZE_ISLAND_FRAGMENTS        = 0x23;
-    private const SIZE_LEVELS                  = 0x30;
-    private const SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
     private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
-    private const SIZE_ENTITY_SLOT             = 0x02;
-    private const SIZE_SPRITE_3BY1_ENEMY       = 0x18;
-    private const SIZE_SPRITE_FUEL_STATION     = 0x32;
-    private const SIZE_SPRITE_ROCKS            = 0x04;
-    private const SIZE_SPRITE_FRAMES           = 0x04;
-    private const SIZE_TYPE_3BY1_ENEMY         = 0x05;
-    private const SIZE_TERRAIN_FRAGMENT        = 0x04;
-    private const SIZE_TERRAIN_PROFILE         = 0x10;
-    private const SIZE_TERRAIN_PROFILES        = 0x0F;
+    private const SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
+    private const SIZE_LEVELS                  = 0x30;
+
+    private const SIZE_ISLAND_FRAGMENT     = 0x03;
+    private const SIZE_ISLAND_FRAGMENTS    = 0x23;
+    private const SIZE_ENTITY_SLOT         = 0x02;
+    private const SIZE_SPRITE_3BY1_ENEMY   = 0x18;
+    private const SIZE_SPRITE_FUEL_STATION = 0x32;
+    private const SIZE_SPRITE_ROCKS        = 0x04;
+    private const SIZE_SPRITE_FRAMES       = 0x04;
+    private const SIZE_TYPE_3BY1_ENEMY     = 0x05;
+    private const SIZE_TERRAIN_FRAGMENT    = 0x04;
+    private const SIZE_TERRAIN_PROFILE     = 0x10;
+    private const SIZE_TERRAIN_PROFILES    = 0x0F;
 
     /** @var resource */
     private $stream;
@@ -79,20 +80,37 @@ final class Binary implements Provider
         $this->stream = $stream;
     }
 
-    public function getLevels(): LevelList
+    public function getTerrainFragments(): TerrainFragmentRepository
     {
-        $terrains = $this->readTerrainsByLevel();
-        $entities = $this->readEntitySlotsByLevel();
-        $levels   = [];
+        $this->seek(self::ADDRESS_LEVEL_TERRAIN);
 
-        for ($i = 0; $i < self::SIZE_LEVELS; $i++) {
-            $levels[] = new Level($terrains[$i], $entities[$i]);
+        $fragments = [];
+
+        for ($i = 0; $i < self::SIZE_LEVEL_TERRAIN_FRAGMENTS * self::SIZE_LEVELS; $i++) {
+            $fragments[] = new TerrainFragment(
+                ...$this->readBytes(self::SIZE_TERRAIN_FRAGMENT),
+            );
         }
 
-        return new LevelList($levels);
+        return new TerrainFragmentRepository($fragments);
     }
 
-    public function getTerrainProfiles(): TerrainProfileRegistry
+    public function getEntitySlots(): EntitySlotRepository
+    {
+        $this->seek(self::ADDRESS_LEVEL_ENTITY_SLOTS);
+
+        $slots = [];
+
+        for ($i = 0; $i < self::SIZE_LEVEL_ENTITY_SLOTS * self::SIZE_LEVELS; $i++) {
+            $slots[] = new EntitySlot(
+                ...$this->readBytes(self::SIZE_ENTITY_SLOT),
+            );
+        }
+
+        return new EntitySlotRepository($slots);
+    }
+
+    public function getTerrainProfiles(): TerrainProfileRepository
     {
         $this->seek(self::ADDRESS_TERRAIN_PROFILES);
 
@@ -102,10 +120,10 @@ final class Binary implements Provider
             $profiles[] = $this->readTerrainProfile();
         }
 
-        return new TerrainProfileRegistry($profiles);
+        return new TerrainProfileRepository($profiles);
     }
 
-    public function getIslandFragments(): IslandFragmentRegistry
+    public function getIslandFragments(): IslandFragmentRepository
     {
         $this->seek(self::ADDRESS_ISLAND_FRAGMENTS);
 
@@ -115,7 +133,7 @@ final class Binary implements Provider
             $fragments[] = $this->readIslandFragment();
         }
 
-        return new IslandFragmentRegistry($fragments);
+        return new IslandFragmentRepository($fragments);
     }
 
     public function getSprites(): SpriteRepository
@@ -125,80 +143,6 @@ final class Binary implements Provider
             $this->readBalloonBytes(),
             $this->readFuelStationSprite(),
             $this->readRockSprites()
-        );
-    }
-
-    /**
-     * @return list<list<TerrainFragment>>
-     */
-    private function readTerrainsByLevel(): array
-    {
-        $this->seek(self::ADDRESS_LEVEL_TERRAIN);
-
-        $levels = [];
-
-        for ($i = 0; $i < self::SIZE_LEVELS; $i++) {
-            $levels[] = $this->readLevelTerrain();
-        }
-
-        return $levels;
-    }
-
-    /**
-     * @return list<list<EntitySlot>>
-     */
-    private function readEntitySlotsByLevel(): array
-    {
-        $this->seek(self::ADDRESS_LEVEL_ENTITY_SLOTS);
-
-        $levels = [];
-
-        for ($i = 0; $i < self::SIZE_LEVELS; $i++) {
-            $levels[] = $this->readLevelEntitySlots();
-        }
-
-        return $levels;
-    }
-
-    /**
-     * @return list<TerrainFragment>
-     */
-    private function readLevelTerrain(): array
-    {
-        $fragments = [];
-
-        for ($i = 0; $i < self::SIZE_LEVEL_TERRAIN_FRAGMENTS; $i++) {
-            $fragments[] = $this->readTerrainFragment();
-        }
-
-        return $fragments;
-    }
-
-    /**
-     * @return list<EntitySlot>
-     */
-    private function readLevelEntitySlots(): array
-    {
-        $slots = [];
-
-        for ($i = 0; $i < self::SIZE_LEVEL_ENTITY_SLOTS; $i++) {
-            $slots[] = $this->readEntitySlot();
-        }
-
-        return $slots;
-    }
-
-    private function readTerrainFragment(): TerrainFragment
-    {
-        return new TerrainFragment(
-            ...$this->readBytes(self::SIZE_TERRAIN_FRAGMENT),
-        );
-    }
-
-    private function readEntitySlot(): EntitySlot
-    {
-        return new EntitySlot(
-            ...$this->readBytes(self::SIZE_ENTITY_SLOT),
         );
     }
 
@@ -225,7 +169,7 @@ final class Binary implements Provider
 
         $bytes = [];
 
-        foreach ([0, 1] as $orientation) {
+        for ($orientation = 0; $orientation < 2; $orientation++) {
             $orientationBytes = [];
 
             for ($type = 1; $type <= self::SIZE_TYPE_3BY1_ENEMY; $type++) {

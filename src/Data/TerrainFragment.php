@@ -4,36 +4,37 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-/**
- * @psalm-immutable
- */
-final class TerrainFragment implements Fragment
+use RiverRaid\Image;
+
+final class TerrainFragment
 {
     private int $renderingMode;
     private int $islandFragmentNumber;
 
     public function __construct(
         private int $byte1,
-        public int $byte2,
-        public int $byte3,
+        private int $byte2,
+        private int $byte3,
         int $byte4,
     ) {
         $this->renderingMode         = $byte4 & 3;
         $this->islandFragmentNumber = $byte4 >> 2;
     }
 
-    public function getProfileNumber(): int
-    {
-        return $this->byte1;
-    }
+    public function render(
+        TerrainProfileRepository $terrainProfiles,
+        IslandFragmentRepository $islandFragments,
+        int $offset,
+        Image $image
+    ): void {
+        $terrainProfiles->getProfile($this->byte1)
+            ->renderRiverBanks($this->byte2, $this->byte3, $this->renderingMode, $offset, $image);
 
-    public function getRenderingMode(): int
-    {
-        return $this->renderingMode;
-    }
+        if ($this->islandFragmentNumber <= 0) {
+            return;
+        }
 
-    public function getIslandFragmentNumber(): int
-    {
-        return $this->islandFragmentNumber;
+        $islandFragments->getFragment($this->islandFragmentNumber)
+            ->render($terrainProfiles, $offset, $image);
     }
 }

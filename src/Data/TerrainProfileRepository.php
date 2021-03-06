@@ -7,7 +7,7 @@ namespace RiverRaid\Data;
 /**
  * @psalm-immutable
  */
-final class TerrainProfileRegistry
+final class TerrainProfileRepository
 {
     /** @param list<TerrainProfile> $profiles */
     public function __construct(
