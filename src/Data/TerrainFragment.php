@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
+use RiverRaid\Data\TerrainProfile\RenderingMode;
 use RiverRaid\Image;
 
 final class TerrainFragment
 {
-    private int $renderingMode;
+    private RenderingMode $renderingMode;
+
     private int $islandFragmentNumber;
 
     public function __construct(
@@ -17,7 +19,7 @@ final class TerrainFragment
         private int $byte3,
         int $byte4,
     ) {
-        $this->renderingMode         = $byte4 & 3;
+        $this->renderingMode         = new RenderingMode($byte4 & 3);
         $this->islandFragmentNumber = $byte4 >> 2;
     }
 
