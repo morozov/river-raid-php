@@ -9,8 +9,11 @@ use RiverRaid\BinaryUtils;
 use RiverRaid\Data\Entity\Balloon;
 use RiverRaid\Data\Entity\FuelStation;
 use RiverRaid\Data\Entity\Rock;
+use RiverRaid\Data\Entity\Tank;
 use RiverRaid\Data\Entity\ThreeByOneTileEnemy;
 use RiverRaid\Image;
+
+use function sprintf;
 
 /**
  * Entity slot contains an entity definition and position. A slot can be empty.
@@ -21,6 +24,11 @@ final class EntitySlot
      * Bit that defines whether the entity is a rock or an interactive entity.
      */
     private const BIT_ROCK = 3;
+
+    /**
+     * Bit that defines tank location.
+     */
+    private const BIT_TANK_LOCATION = 5;
 
     /**
      * Bit that defines the entity orientation (left or right), if applicable.
@@ -46,6 +54,20 @@ final class EntitySlot
         $this->entity = $this->newEntity($definition);
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->entity === null;
+    }
+
+    public function toString(): string
+    {
+        if ($this->entity === null) {
+            return 'empty';
+        }
+
+        return sprintf('%s at %d', $this->entity->toString(), $this->position);
+    }
+
     public function render(SpriteRepository $sprites, int $y, Image $image): void
     {
         if ($this->entity === null) {
@@ -67,7 +89,7 @@ final class EntitySlot
 
         $type = $definition & self::BITS_INTERACTIVE_TYPE;
 
-        return match ($type) {
+        $entity = match ($type) {
             Entity::TYPE_HELICOPTER_REGULAR,
             Entity::TYPE_SHIP,
             Entity::TYPE_HELICOPTER_ADVANCED,
@@ -81,5 +103,11 @@ final class EntitySlot
             Entity::TYPE_FUEL_STATION => new FuelStation(),
             default => throw new LogicException(),
         };
+
+        if ($type === Entity::TYPE_TANK) {
+            $entity = new Tank($entity, BinaryUtils::bit($definition, self::BIT_TANK_LOCATION));
+        }
+
+        return $entity;
     }
 }

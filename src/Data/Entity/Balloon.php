@@ -17,6 +17,6 @@ final class Balloon implements Entity
 
     public function toString(): string
     {
-        return 'Balloon';
+        return 'balloon';
     }
 }

@@ -28,11 +28,11 @@ final class ThreeByOneTileEnemy implements Entity
         return sprintf(
             '%s headed %s',
             match ($this->type) {
-                Entity::TYPE_HELICOPTER_REGULAR => 'Regular helicopter',
-                Entity::TYPE_SHIP => 'Ship',
-                Entity::TYPE_HELICOPTER_ADVANCED => 'Advanced helicopter',
-                Entity::TYPE_TANK => 'Tank',
-                Entity::TYPE_FIGHTER => 'Fighter',
+                Entity::TYPE_HELICOPTER_REGULAR => 'regular helicopter',
+                Entity::TYPE_SHIP => 'ship',
+                Entity::TYPE_HELICOPTER_ADVANCED => 'advanced helicopter',
+                Entity::TYPE_TANK => 'tank',
+                Entity::TYPE_FIGHTER => 'fighter',
             },
             $this->orientation === 0 ? 'left' : 'right',
         );

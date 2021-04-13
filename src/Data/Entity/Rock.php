@@ -24,6 +24,6 @@ final class Rock implements Entity
 
     public function toString(): string
     {
-        return sprintf('Rock #%d', $this->type + 1);
+        return sprintf('rock #%d', $this->type + 1);
     }
 }
