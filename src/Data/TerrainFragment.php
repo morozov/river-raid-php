@@ -19,7 +19,7 @@ final class TerrainFragment
         private int $byte3,
         int $byte4,
     ) {
-        $this->renderingMode         = new RenderingMode($byte4 & 3);
+        $this->renderingMode         = RenderingMode::from($byte4 & 3);
         $this->islandFragmentNumber = $byte4 >> 2;
     }
 

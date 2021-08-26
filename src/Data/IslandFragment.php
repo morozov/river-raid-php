@@ -16,7 +16,7 @@ final class IslandFragment
         private int $byte2,
         int $byte3,
     ) {
-        $this->renderingMode = new RenderingMode($byte3);
+        $this->renderingMode = RenderingMode::from($byte3);
     }
 
     public function render(TerrainProfileRepository $terrainProfiles, int $offset, Image $image): void
