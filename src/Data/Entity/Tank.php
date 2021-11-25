@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RiverRaid\Data\Entity;
 
 use RiverRaid\Data\Entity;
+use RiverRaid\Data\Entity\Tank\Location;
 use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Image;
 
@@ -12,12 +13,9 @@ use function sprintf;
 
 final class Tank implements Entity
 {
-    private const LOCATION_BRIDGE     = 0;
-    private const LOCATION_RIVER_BANK = 1;
-
     public function __construct(
         private Entity $entity,
-        private int $location,
+        private Location $location,
     ) {
     }
 
@@ -28,9 +26,6 @@ final class Tank implements Entity
 
     public function toString(): string
     {
-        return sprintf('%s %s', match ($this->location) {
-            self::LOCATION_RIVER_BANK => 'river bank',
-            self::LOCATION_BRIDGE => 'bridge',
-        }, $this->entity->toString());
+        return sprintf('%s %s', $this->location->toString(), $this->entity->toString());
     }
 }

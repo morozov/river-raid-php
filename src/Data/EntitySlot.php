@@ -10,6 +10,7 @@ use RiverRaid\Data\Entity\Balloon;
 use RiverRaid\Data\Entity\FuelStation;
 use RiverRaid\Data\Entity\Rock;
 use RiverRaid\Data\Entity\Tank;
+use RiverRaid\Data\Entity\Tank\Location;
 use RiverRaid\Data\Entity\ThreeByOneTileEnemy;
 use RiverRaid\Image;
 
@@ -105,7 +106,7 @@ final class EntitySlot
         };
 
         if ($type === Entity::TYPE_TANK) {
-            $entity = new Tank($entity, BinaryUtils::bit($definition, self::BIT_TANK_LOCATION));
+            $entity = new Tank($entity, Location::from(BinaryUtils::bit($definition, self::BIT_TANK_LOCATION)));
         }
 
         return $entity;
