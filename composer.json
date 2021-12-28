@@ -9,7 +9,7 @@
         "doctrine/coding-standard": "^9.0.0",
         "phpstan/phpstan": "^1.2",
         "phpstan/phpstan-strict-rules": "^1.1",
-        "vimeo/psalm": "^4.13"
+        "vimeo/psalm": "^4.16"
     },
     "config": {
         "platform": {
