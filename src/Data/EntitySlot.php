@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-use LogicException;
 use RiverRaid\BinaryUtils;
-use RiverRaid\Data\Entity\Balloon;
-use RiverRaid\Data\Entity\FuelStation;
-use RiverRaid\Data\Entity\Rock;
-use RiverRaid\Data\Entity\Tank;
-use RiverRaid\Data\Entity\Tank\Location;
-use RiverRaid\Data\Entity\ThreeByOneTileEnemy;
-use RiverRaid\Data\Entity\ThreeByOneTileEnemy\Orientation;
+use RiverRaid\Data\Entity\Property\Location;
+use RiverRaid\Data\Entity\Property\Orientation;
+use RiverRaid\Data\Entity\Type;
+use RiverRaid\Data\Entity\Type\AdvancedHelicopter;
+use RiverRaid\Data\Entity\Type\Balloon;
+use RiverRaid\Data\Entity\Type\Fighter;
+use RiverRaid\Data\Entity\Type\FuelStation;
+use RiverRaid\Data\Entity\Type\RegularHelicopter;
+use RiverRaid\Data\Entity\Type\Rock;
+use RiverRaid\Data\Entity\Type\Ship;
+use RiverRaid\Data\Entity\Type\Tank;
 use RiverRaid\Image;
 
 use function sprintf;
@@ -70,13 +73,13 @@ final class EntitySlot
         return sprintf('%s at %d', $this->entity->toString(), $this->position);
     }
 
-    public function render(SpriteRepository $sprites, int $y, Image $image): void
+    public function render(SpriteRepository $sprites, AttributeRepository $attributes, int $y, Image $image): void
     {
         if ($this->entity === null) {
             return;
         }
 
-        $this->entity->render($sprites, $image, $this->position, $y);
+        $this->entity->render($sprites, $attributes, $image, $this->position, $y);
     }
 
     private function newEntity(int $definition): ?Entity
@@ -89,26 +92,47 @@ final class EntitySlot
             return new Rock($definition & self::BITS_ROCK_TYPE);
         }
 
-        $type = $definition & self::BITS_INTERACTIVE_TYPE;
+        $type = $this->getType($definition);
 
-        $threeByOneTileEnemyType = ThreeByOneTileEnemy\Type::tryFrom($type);
-        if ($threeByOneTileEnemyType !== null) {
-            return new ThreeByOneTileEnemy(
-                $threeByOneTileEnemyType,
-                Orientation::from(BinaryUtils::bit($definition, self::BIT_ORIENTATION)),
-            );
-        }
-
-        $entity = match ($type) {
-            Entity::TYPE_BALLOON => new Balloon(),
-            Entity::TYPE_FUEL_STATION => new FuelStation(),
-            default => throw new LogicException(),
+        return match ($type) {
+            Type::HELICOPTER_REGULAR => new RegularHelicopter(
+                $type,
+                $this->getOrientation($definition),
+            ),
+            Type::SHIP => new Ship(
+                $type,
+                $this->getOrientation($definition),
+            ),
+            Type::HELICOPTER_ADVANCED => new AdvancedHelicopter(
+                $type,
+                $this->getOrientation($definition),
+            ),
+            Type::TANK => new Tank(
+                $type,
+                $this->getOrientation($definition),
+                $this->getLocation($definition)
+            ),
+            Type::FIGHTER => new Fighter(
+                $type,
+                $this->getOrientation($definition),
+            ),
+            Type::BALLOON => new Balloon(),
+            Type::FUEL_STATION => new FuelStation(),
         };
+    }
 
-        if ($type === Entity::TYPE_TANK) {
-            $entity = new Tank($entity, Location::from(BinaryUtils::bit($definition, self::BIT_TANK_LOCATION)));
-        }
+    private function getType(int $definition): Type
+    {
+        return Type::from($definition & self::BITS_INTERACTIVE_TYPE);
+    }
 
-        return $entity;
+    private function getOrientation(int $definition): Orientation
+    {
+        return Orientation::from(BinaryUtils::bit($definition, self::BIT_ORIENTATION));
+    }
+
+    private function getLocation(int $definition): Location
+    {
+        return Location::from(BinaryUtils::bit($definition, self::BIT_TANK_LOCATION));
     }
 }

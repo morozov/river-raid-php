@@ -19,6 +19,7 @@ final class LevelFragment
         TerrainProfileRepository $terrainProfiles,
         IslandFragmentRepository $islandFragments,
         SpriteRepository $sprites,
+        AttributeRepository $attributes,
         int $y,
         Image $image,
     ): void {
@@ -28,7 +29,7 @@ final class LevelFragment
         for ($i = 0; $i < 2; $i++) {
             $entitySlots->getSlot(
                 $this->offset * 2 + $i
-            )->render($sprites, $y - $i * 8, $image);
+            )->render($sprites, $attributes, $y - $i * 8, $image);
         }
     }
 }

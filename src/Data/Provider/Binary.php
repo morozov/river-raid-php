@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Provider;
 
-use RiverRaid\Data\Entity;
+use RiverRaid\Data\AttributeRepository;
 use RiverRaid\Data\EntitySlot;
 use RiverRaid\Data\EntitySlotRepository;
 use RiverRaid\Data\IslandFragment;
@@ -146,6 +146,26 @@ final class Binary implements Provider
         );
     }
 
+    public function getAttributes(): AttributeRepository
+    {
+        return new AttributeRepository(
+            new Attributes(0x0E),
+            new Attributes(0x0D),
+            new Attributes(0x20),
+            new Attributes(0x20),
+            new Attributes(0x0C),
+            new Attributes(
+                $this->seekAndReadByte(self::ADDRESS_SPRITE_BALLOON_ATTRIBUTES),
+            ),
+            new Attributes(
+                $this->seekAndReadByte(self::ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES),
+            ),
+            new Attributes(
+                $this->seekAndReadByte(self::ADDRESS_SPRITE_ROCK_ATTRIBUTES),
+            ),
+        );
+    }
+
     private function readTerrainProfile(): TerrainProfile
     {
         return new TerrainProfile(
@@ -175,14 +195,6 @@ final class Binary implements Provider
             for ($type = 1; $type <= self::SIZE_TYPE_3BY1_ENEMY; $type++) {
                 $orientationBytes[] = new Sprite(
                     3,
-                    new Attributes(
-                        match ($type) {
-                            Entity::TYPE_SHIP => 0x0D,
-                            Entity::TYPE_TANK => 0x20,
-                            Entity::TYPE_FIGHTER => 0x0C,
-                            default => 0x0E,
-                        }
-                    ),
                     $this->readBytes(self::SIZE_SPRITE_3BY1_ENEMY)
                 );
                 $this->advance(self::SIZE_SPRITE_3BY1_ENEMY * (self::SIZE_SPRITE_FRAMES - 1));
@@ -196,37 +208,25 @@ final class Binary implements Provider
 
     private function readBalloonBytes(): Sprite
     {
-        $this->seek(self::ADDRESS_SPRITE_BALLOON_SIZE);
-        $size = $this->readByte();
-
-        $this->seek(self::ADDRESS_SPRITE_BALLOON_WIDTH);
-        $width = $this->readByte();
-
-        $this->seek(self::ADDRESS_SPRITE_BALLOON_ATTRIBUTES);
-        $attributes = $this->readByte();
+        $size  = $this->seekAndReadByte(self::ADDRESS_SPRITE_BALLOON_SIZE);
+        $width = $this->seekAndReadByte(self::ADDRESS_SPRITE_BALLOON_WIDTH);
 
         $this->seek(self::ADDRESS_SPRITE_BALLOON_PIXELS);
 
         return new Sprite(
             $width,
-            new Attributes($attributes),
             $this->readBytes($size)
         );
     }
 
     private function readFuelStationSprite(): Sprite
     {
-        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION_WIDTH);
-        $width = $this->readByte();
-
-        $this->seek(self::ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES);
-        $attributes = $this->readByte();
+        $width = $this->seekAndReadByte(self::ADDRESS_SPRITE_FUEL_STATION_WIDTH);
 
         $this->seek(self::ADDRESS_SPRITE_FUEL_STATION_PIXELS);
 
         return new Sprite(
             $width,
-            new Attributes($attributes),
             $this->readBytes(self::SIZE_SPRITE_FUEL_STATION)
         );
     }
@@ -236,14 +236,8 @@ final class Binary implements Provider
      */
     private function readRockSprites(): array
     {
-        $this->seek(self::ADDRESS_SPRITE_ROCK_SIZE);
-        $size = $this->readByte();
-
-        $this->seek(self::ADDRESS_SPRITE_ROCK_WIDTH);
-        $width = $this->readByte();
-
-        $this->seek(self::ADDRESS_SPRITE_ROCK_ATTRIBUTES);
-        $attributes = $this->readByte();
+        $size  = $this->seekAndReadByte(self::ADDRESS_SPRITE_ROCK_SIZE);
+        $width = $this->seekAndReadByte(self::ADDRESS_SPRITE_ROCK_WIDTH);
 
         $this->seek(self::ADDRESS_SPRITE_ROCK_PIXELS);
 
@@ -252,7 +246,6 @@ final class Binary implements Provider
         for ($i = 0; $i < self::SIZE_SPRITE_ROCKS; $i++) {
             $sprites[] = new Sprite(
                 $width,
-                new Attributes($attributes),
                 $this->readBytes($size)
             );
         }
@@ -299,5 +292,15 @@ final class Binary implements Provider
     private function readByte(): int
     {
         return $this->readBytes(1)[0];
+    }
+
+    /**
+     * @return positive-int
+     */
+    private function seekAndReadByte(int $address): int
+    {
+        $this->seek($address);
+
+        return $this->readByte();
     }
 }

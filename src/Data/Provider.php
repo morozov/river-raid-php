@@ -15,4 +15,6 @@ interface Provider
     public function getIslandFragments(): IslandFragmentRepository;
 
     public function getSprites(): SpriteRepository;
+
+    public function getAttributes(): AttributeRepository;
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-use RiverRaid\Data\Entity\ThreeByOneTileEnemy\Orientation;
-use RiverRaid\Data\Entity\ThreeByOneTileEnemy\Type;
+use RiverRaid\Data\Entity\Property\Orientation;
+use RiverRaid\Data\Entity\Type;
 
 /**
  * @psalm-immutable
@@ -24,22 +24,22 @@ final class SpriteRepository
     ) {
     }
 
-    public function get3By1Enemy(Orientation $orientation, Type $type): Sprite
+    public function getThreeByOneTileEnemySprite(Orientation $orientation, Type $type): Sprite
     {
         return $this->threeByOneTileEnemies[1 - $orientation->value][$type->value - 1];
     }
 
-    public function getBalloon(): Sprite
+    public function getBalloonSprite(): Sprite
     {
         return $this->balloon;
     }
 
-    public function getFuelStation(): Sprite
+    public function getFuelStationSprite(): Sprite
     {
         return $this->fuelStation;
     }
 
-    public function getRock(int $type): Sprite
+    public function getRockSprite(int $type): Sprite
     {
         return $this->rocks[$type];
     }

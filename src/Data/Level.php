@@ -22,6 +22,7 @@ final class Level
         TerrainProfileRepository $terrainProfiles,
         IslandFragmentRepository $islandFragments,
         SpriteRepository $sprites,
+        AttributeRepository $attributes,
         Image $image,
     ): void {
         for ($i = 0; $i < self::SIZE_LEVEL_FRAGMENTS; $i++) {
@@ -33,6 +34,7 @@ final class Level
                 $terrainProfiles,
                 $islandFragments,
                 $sprites,
+                $attributes,
                 1023 - $i * 16,
                 $image
             );

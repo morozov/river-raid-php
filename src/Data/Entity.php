@@ -8,13 +8,13 @@ use RiverRaid\Image;
 
 interface Entity
 {
-    public const TYPE_SHIP                = 2;
-    public const TYPE_TANK                = 4;
-    public const TYPE_FIGHTER             = 5;
-    public const TYPE_BALLOON             = 6;
-    public const TYPE_FUEL_STATION        = 7;
+    public function render(
+        SpriteRepository $spriteRepository,
+        AttributeRepository $attributeRepository,
+        Image $image,
+        int $x,
+        int $y
+    ): void;
 
     public function toString(): string;
-
-    public function render(SpriteRepository $repository, Image $image, int $x, int $y): void;
 }

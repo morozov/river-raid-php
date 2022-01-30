@@ -18,11 +18,20 @@ $entitySlots      = $provider->getEntitySlots();
 $terrainProfiles  = $provider->getTerrainProfiles();
 $icelandFragments = $provider->getIslandFragments();
 $sprites          = $provider->getSprites();
+$attributes       = $provider->getAttributes();
 
 for ($i = 0; $i < SIZE_LEVELS; $i++) {
     $image = new Image(256, 1024);
     $level = new Level($i);
-    $level->render($terrainFragments, $entitySlots, $terrainProfiles, $icelandFragments, $sprites, $image);
+    $level->render(
+        $terrainFragments,
+        $entitySlots,
+        $terrainProfiles,
+        $icelandFragments,
+        $sprites,
+        $attributes,
+        $image,
+    );
 
     $image->save(__DIR__ . '/../build/level' . sprintf('%02d', $i + 1) . '.png');
 }

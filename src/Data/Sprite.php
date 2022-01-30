@@ -14,17 +14,16 @@ final class Sprite
     /** @param list<int> $bytes */
     public function __construct(
         private int $width,
-        private Attributes $attributes,
         private array $bytes,
     ) {
     }
 
-    public function render(Image $image, int $x, int $y): void
+    public function render(Image $image, int $x, int $y, Attributes $attributes): void
     {
         $width = self::SIZE_TILE * $this->width;
 
-        $ink   = $this->attributes->allocateInkColor($image);
-        $paper = $this->attributes->allocatePaperColor($image);
+        $ink   = $attributes->allocateInkColor($image);
+        $paper = $attributes->allocatePaperColor($image);
 
         $px = 0;
 

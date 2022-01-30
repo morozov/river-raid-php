@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RiverRaid\Data\Entity\ThreeByOneTileEnemy;
+namespace RiverRaid\Data\Entity\Property;
 
 enum Orientation: int
 {
