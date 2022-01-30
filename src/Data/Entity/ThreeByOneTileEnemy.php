@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace RiverRaid\Data\Entity;
 
 use RiverRaid\Data\Entity;
+use RiverRaid\Data\Entity\ThreeByOneTileEnemy\Orientation;
+use RiverRaid\Data\Entity\ThreeByOneTileEnemy\Type;
 use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Image;
 
@@ -13,8 +15,8 @@ use function sprintf;
 final class ThreeByOneTileEnemy implements Entity
 {
     public function __construct(
-        private int $type,
-        private int $orientation,
+        private Type $type,
+        private Orientation $orientation,
     ) {
     }
 
@@ -25,16 +27,6 @@ final class ThreeByOneTileEnemy implements Entity
 
     public function toString(): string
     {
-        return sprintf(
-            '%s headed %s',
-            match ($this->type) {
-                Entity::TYPE_HELICOPTER_REGULAR => 'regular helicopter',
-                Entity::TYPE_SHIP => 'ship',
-                Entity::TYPE_HELICOPTER_ADVANCED => 'advanced helicopter',
-                Entity::TYPE_TANK => 'tank',
-                Entity::TYPE_FIGHTER => 'fighter',
-            },
-            $this->orientation === 0 ? 'left' : 'right',
-        );
+        return sprintf('%s oriented %s', $this->type->toString(), $this->orientation->toString());
     }
 }

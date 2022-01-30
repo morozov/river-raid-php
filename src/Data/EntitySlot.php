@@ -12,6 +12,7 @@ use RiverRaid\Data\Entity\Rock;
 use RiverRaid\Data\Entity\Tank;
 use RiverRaid\Data\Entity\Tank\Location;
 use RiverRaid\Data\Entity\ThreeByOneTileEnemy;
+use RiverRaid\Data\Entity\ThreeByOneTileEnemy\Orientation;
 use RiverRaid\Image;
 
 use function sprintf;
@@ -90,16 +91,15 @@ final class EntitySlot
 
         $type = $definition & self::BITS_INTERACTIVE_TYPE;
 
+        $threeByOneTileEnemyType = ThreeByOneTileEnemy\Type::tryFrom($type);
+        if ($threeByOneTileEnemyType !== null) {
+            return new ThreeByOneTileEnemy(
+                $threeByOneTileEnemyType,
+                Orientation::from(BinaryUtils::bit($definition, self::BIT_ORIENTATION)),
+            );
+        }
+
         $entity = match ($type) {
-            Entity::TYPE_HELICOPTER_REGULAR,
-            Entity::TYPE_SHIP,
-            Entity::TYPE_HELICOPTER_ADVANCED,
-            Entity::TYPE_TANK,
-            Entity::TYPE_FIGHTER,
-            => new ThreeByOneTileEnemy(
-                $type,
-                BinaryUtils::bit($definition, self::BIT_ORIENTATION)
-            ),
             Entity::TYPE_BALLOON => new Balloon(),
             Entity::TYPE_FUEL_STATION => new FuelStation(),
             default => throw new LogicException(),
