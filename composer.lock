@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bcc9e83982cb9404816c7b74da3d92a",
+    "content-hash": "e41016d3b9bdfda29bce536b6aef19be",
     "packages": [],
     "packages-dev": [
         {
@@ -1443,16 +1443,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.6.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e"
+                "reference": "96b0866e57b00a91efb608d1938d9505c06b3fb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f268ca40d54617c6e06757f83f699775c9b3ff2e",
-                "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/96b0866e57b00a91efb608d1938d9505c06b3fb9",
+                "reference": "96b0866e57b00a91efb608d1938d9505c06b3fb9",
                 "shasum": ""
             },
             "require": {
@@ -1464,6 +1464,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
+            "default-branch": true,
             "bin": [
                 "bin/phpcs",
                 "bin/phpcbf"
@@ -1495,7 +1496,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2021-10-11T04:00:11+00:00"
+            "time": "2022-05-18T05:35:53+00:00"
         },
         {
             "name": "symfony/console",
@@ -2301,7 +2302,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "squizlabs/php_codesniffer": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -2312,5 +2315,5 @@
     "platform-overrides": {
         "php": "8.1.0"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
