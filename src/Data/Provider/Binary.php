@@ -152,7 +152,7 @@ final class Binary implements Provider
             new Attributes(0x0E),
             new Attributes(0x0D),
             new Attributes(0x20),
-            new Attributes(0x20),
+            new Attributes(0x01),
             new Attributes(0x0C),
             new Attributes(
                 $this->seekAndReadByte(self::ADDRESS_SPRITE_BALLOON_ATTRIBUTES),
