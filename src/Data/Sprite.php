@@ -13,8 +13,8 @@ final class Sprite
 
     /** @param list<int> $bytes */
     public function __construct(
-        private int $width,
-        private array $bytes,
+        private readonly int $width,
+        private readonly array $bytes,
     ) {
     }
 

@@ -11,10 +11,10 @@ final class Attributes
     private const BRIGHTNESS = 197;
 
     /** @psalm-immutable */
-    private Color $inkColor;
+    private readonly Color $inkColor;
 
     /** @psalm-immutable */
-    private Color $paperColor;
+    private readonly Color $paperColor;
 
     public function __construct(int $attributes)
     {

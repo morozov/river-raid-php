@@ -17,7 +17,7 @@ final class Tank extends ThreeByOneTileEnemy
     public function __construct(
         Type $type,
         Orientation $orientation,
-        private Location $location,
+        private readonly Location $location,
     ) {
         parent::__construct($type, $orientation);
     }

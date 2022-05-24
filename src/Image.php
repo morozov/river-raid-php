@@ -18,7 +18,7 @@ use function imagesetpixel;
 
 final class Image
 {
-    private GdImage $image;
+    private readonly GdImage $image;
 
     public function __construct(int $width, int $height)
     {

@@ -12,14 +12,14 @@ use RiverRaid\Platform\Attributes;
 final class AttributeRepository
 {
     public function __construct(
-        private Attributes $helicopter,
-        private Attributes $ship,
-        private Attributes $tankOnBank,
-        private Attributes $tankOnBridge,
-        private Attributes $fighter,
-        private Attributes $balloon,
-        private Attributes $fuelStation,
-        private Attributes $rock,
+        private readonly Attributes $helicopter,
+        private readonly Attributes $ship,
+        private readonly Attributes $tankOnBank,
+        private readonly Attributes $tankOnBridge,
+        private readonly Attributes $fighter,
+        private readonly Attributes $balloon,
+        private readonly Attributes $fuelStation,
+        private readonly Attributes $rock,
     ) {
     }
 

@@ -9,7 +9,7 @@ use RiverRaid\Image;
 final class LevelFragment
 {
     public function __construct(
-        private int $offset,
+        private readonly int $offset,
     ) {
     }
 

@@ -9,11 +9,11 @@ use RiverRaid\Image;
 
 final class IslandFragment
 {
-    private RenderingMode $renderingMode;
+    private readonly RenderingMode $renderingMode;
 
     public function __construct(
-        private int $byte1,
-        private int $byte2,
+        private readonly int $byte1,
+        private readonly int $byte2,
         int $byte3,
     ) {
         $this->renderingMode = RenderingMode::from($byte3);

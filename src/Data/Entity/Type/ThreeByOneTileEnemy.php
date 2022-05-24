@@ -17,8 +17,8 @@ use function sprintf;
 abstract class ThreeByOneTileEnemy implements Entity
 {
     public function __construct(
-        private Type $type,
-        private Orientation $orientation,
+        private readonly Type $type,
+        private readonly Orientation $orientation,
     ) {
     }
 

@@ -50,11 +50,11 @@ final class EntitySlot
      */
     private const BITS_INTERACTIVE_TYPE = 0x07;
 
-    private ?Entity $entity;
+    private readonly ?Entity $entity;
 
     public function __construct(
         int $definition,
-        private int $position,
+        private readonly int $position,
     ) {
         $this->entity = $this->newEntity($definition);
     }

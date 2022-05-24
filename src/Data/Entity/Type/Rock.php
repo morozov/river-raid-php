@@ -14,7 +14,7 @@ use function sprintf;
 final class Rock implements Entity
 {
     public function __construct(
-        private int $type,
+        private readonly int $type,
     ) {
     }
 

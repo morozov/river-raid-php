@@ -69,7 +69,7 @@ final class Binary implements Provider
     /** @var resource */
     private $stream;
 
-    public function __construct(string $path, private int $startAddress)
+    public function __construct(string $path, private readonly int $startAddress)
     {
         $stream = fopen($path, 'rb');
 

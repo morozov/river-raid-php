@@ -11,7 +11,7 @@ final class EntitySlotRepository
 {
     /** @param list<EntitySlot> $slots */
     public function __construct(
-        private array $slots,
+        private readonly array $slots,
     ) {
     }
 

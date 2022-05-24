@@ -9,13 +9,13 @@ use RiverRaid\Image;
 final class Color
 {
     /** @psalm-immutable */
-    private int $blue;
+    private readonly int $blue;
 
     /** @psalm-immutable */
-    private int $red;
+    private readonly int $red;
 
     /** @psalm-immutable */
-    private int $green;
+    private readonly int $green;
 
     public function __construct(int $color)
     {

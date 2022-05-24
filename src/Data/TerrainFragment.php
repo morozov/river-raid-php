@@ -9,14 +9,14 @@ use RiverRaid\Image;
 
 final class TerrainFragment
 {
-    private RenderingMode $renderingMode;
+    private readonly RenderingMode $renderingMode;
 
-    private int $islandFragmentNumber;
+    private readonly int $islandFragmentNumber;
 
     public function __construct(
-        private int $byte1,
-        private int $byte2,
-        private int $byte3,
+        private readonly int $byte1,
+        private readonly int $byte2,
+        private readonly int $byte3,
         int $byte4,
     ) {
         $this->renderingMode         = RenderingMode::from($byte4 & 3);

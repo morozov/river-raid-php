@@ -17,10 +17,10 @@ final class SpriteRepository
      * @param list<Sprite>       $rocks
      */
     public function __construct(
-        private array $threeByOneTileEnemies,
-        private Sprite $balloon,
-        private Sprite $fuelStation,
-        private array $rocks,
+        private readonly array $threeByOneTileEnemies,
+        private readonly Sprite $balloon,
+        private readonly Sprite $fuelStation,
+        private readonly array $rocks,
     ) {
     }
 

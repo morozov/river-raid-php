@@ -11,7 +11,7 @@ final class TerrainProfileRepository
 {
     /** @param list<TerrainProfile> $profiles */
     public function __construct(
-        private array $profiles,
+        private readonly array $profiles,
     ) {
     }
 

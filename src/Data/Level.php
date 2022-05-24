@@ -12,7 +12,7 @@ final class Level
     private const SIZE_TOTAL_FRAGMENTS = 0x40 * 0x30;
 
     public function __construct(
-        private int $offset,
+        private readonly int $offset,
     ) {
     }
 

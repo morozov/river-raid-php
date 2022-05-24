@@ -11,7 +11,7 @@ final class IslandFragmentRepository
 {
     /** @param list<IslandFragment> $fragments */
     public function __construct(
-        private array $fragments,
+        private readonly array $fragments,
     ) {
     }
 

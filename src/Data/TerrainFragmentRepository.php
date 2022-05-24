@@ -11,7 +11,7 @@ final class TerrainFragmentRepository
 {
     /** @param list<TerrainFragment> $fragments */
     public function __construct(
-        private array $fragments,
+        private readonly array $fragments,
     ) {
     }
 
