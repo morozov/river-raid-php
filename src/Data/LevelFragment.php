@@ -16,15 +16,13 @@ final class LevelFragment
     public function render(
         TerrainFragmentRepository $terrainFragments,
         EntitySlotRepository $entitySlots,
-        TerrainProfileRepository $terrainProfiles,
-        IslandFragmentRepository $islandFragments,
         SpriteRepository $sprites,
         AttributeRepository $attributes,
         int $y,
         Image $image,
     ): void {
         $terrainFragments->getFragment($this->offset)
-            ->render($terrainProfiles, $islandFragments, $y, $image);
+            ->render($y, $image);
 
         for ($i = 0; $i < 2; $i++) {
             $entitySlots->getSlot(

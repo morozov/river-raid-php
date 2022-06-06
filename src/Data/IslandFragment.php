@@ -9,19 +9,15 @@ use RiverRaid\Image;
 
 final class IslandFragment
 {
-    private readonly RenderingMode $renderingMode;
-
     public function __construct(
-        private readonly int $byte1,
+        private readonly TerrainProfile $terrainProfile,
         private readonly int $byte2,
-        int $byte3,
+        private readonly RenderingMode $renderingMode,
     ) {
-        $this->renderingMode = RenderingMode::from($byte3);
     }
 
-    public function render(TerrainProfileRepository $terrainProfiles, int $offset, Image $image): void
+    public function render(int $offset, Image $image): void
     {
-        $terrainProfiles->getProfile($this->byte1)
-            ->renderIsland($this->byte2, $this->renderingMode, $offset, $image);
+        $this->terrainProfile->renderIsland($this->byte2, $this->renderingMode, $offset, $image);
     }
 }

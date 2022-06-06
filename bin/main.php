@@ -13,10 +13,10 @@ const SIZE_LEVELS = 0x30;
 
 $provider = new Binary(__DIR__ . '/../river-raid.bin', 0x4000);
 
-$terrainFragments = $provider->getTerrainFragments();
-$entitySlots      = $provider->getEntitySlots();
 $terrainProfiles  = $provider->getTerrainProfiles();
-$icelandFragments = $provider->getIslandFragments();
+$icelandFragments = $provider->getIslandFragments($terrainProfiles);
+$terrainFragments = $provider->getTerrainFragments($terrainProfiles, $icelandFragments);
+$entitySlots      = $provider->getEntitySlots();
 $sprites          = $provider->getSprites();
 $attributes       = $provider->getAttributes();
 
@@ -26,8 +26,6 @@ for ($i = 0; $i < SIZE_LEVELS; $i++) {
     $level->render(
         $terrainFragments,
         $entitySlots,
-        $terrainProfiles,
-        $icelandFragments,
         $sprites,
         $attributes,
         $image,

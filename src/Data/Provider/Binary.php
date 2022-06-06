@@ -15,6 +15,7 @@ use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Data\TerrainFragment;
 use RiverRaid\Data\TerrainFragmentRepository;
 use RiverRaid\Data\TerrainProfile;
+use RiverRaid\Data\TerrainProfile\RenderingMode;
 use RiverRaid\Data\TerrainProfileRepository;
 use RiverRaid\Platform\Attributes;
 use RuntimeException;
@@ -30,7 +31,7 @@ use const SEEK_CUR;
 
 final class Binary implements Provider
 {
-    private const ADDRESS_ISLAND_FRAGMENTS  = 0xC600;
+    private const ADDRESS_ISLAND_FRAGMENTS   = 0xC600;
     private const ADDRESS_LEVEL_TERRAIN      = 0x9500;
     private const ADDRESS_TERRAIN_PROFILES   = 0x8063;
     private const ADDRESS_LEVEL_ENTITY_SLOTS = 0xC800;
@@ -80,16 +81,29 @@ final class Binary implements Provider
         $this->stream = $stream;
     }
 
-    public function getTerrainFragments(): TerrainFragmentRepository
-    {
+    public function getTerrainFragments(
+        TerrainProfileRepository $terrainProfileRepository,
+        IslandFragmentRepository $islandFragmentRepository,
+    ): TerrainFragmentRepository {
         $this->seek(self::ADDRESS_LEVEL_TERRAIN);
 
         $fragments = [];
 
         for ($i = 0; $i < self::SIZE_LEVEL_TERRAIN_FRAGMENTS * self::SIZE_LEVELS; $i++) {
-            $fragments[] = new TerrainFragment(
-                ...$this->readBytes(self::SIZE_TERRAIN_FRAGMENT),
-            );
+            [$profileNumber, $byte2, $byte3, $byte4] = $this->readBytes(self::SIZE_TERRAIN_FRAGMENT);
+
+            $terrainProfile = $terrainProfileRepository->getProfile($profileNumber);
+            $renderingMode  = RenderingMode::from($byte4 & 3);
+
+            $islandFragmentNumber = $byte4 >> 2;
+
+            if ($islandFragmentNumber > 0) {
+                $islandFragment = $islandFragmentRepository->getFragment($islandFragmentNumber);
+            } else {
+                $islandFragment = null;
+            }
+
+            $fragments[] = new TerrainFragment($terrainProfile, $byte2, $byte3, $renderingMode, $islandFragment);
         }
 
         return new TerrainFragmentRepository($fragments);
@@ -123,14 +137,14 @@ final class Binary implements Provider
         return new TerrainProfileRepository($profiles);
     }
 
-    public function getIslandFragments(): IslandFragmentRepository
+    public function getIslandFragments(TerrainProfileRepository $terrainProfileRepository): IslandFragmentRepository
     {
         $this->seek(self::ADDRESS_ISLAND_FRAGMENTS);
 
         $fragments = [];
 
         for ($i = 0; $i < self::SIZE_ISLAND_FRAGMENTS; $i++) {
-            $fragments[] = $this->readIslandFragment();
+            $fragments[] = $this->readIslandFragment($terrainProfileRepository);
         }
 
         return new IslandFragmentRepository($fragments);
@@ -173,10 +187,14 @@ final class Binary implements Provider
         );
     }
 
-    private function readIslandFragment(): IslandFragment
+    private function readIslandFragment(TerrainProfileRepository $terrainProfileRepository): IslandFragment
     {
+        [$byte1, $byte2, $byte3] = $this->readBytes(self::SIZE_ISLAND_FRAGMENT);
+
         return new IslandFragment(
-            ...$this->readBytes(self::SIZE_ISLAND_FRAGMENT),
+            $terrainProfileRepository->getProfile($byte1),
+            $byte2,
+            RenderingMode::from($byte3),
         );
     }
 

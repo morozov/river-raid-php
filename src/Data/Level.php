@@ -19,8 +19,6 @@ final class Level
     public function render(
         TerrainFragmentRepository $terrainFragments,
         EntitySlotRepository $entitySlots,
-        TerrainProfileRepository $terrainProfiles,
-        IslandFragmentRepository $islandFragments,
         SpriteRepository $sprites,
         AttributeRepository $attributes,
         Image $image,
@@ -31,8 +29,6 @@ final class Level
             ))->render(
                 $terrainFragments,
                 $entitySlots,
-                $terrainProfiles,
-                $islandFragments,
                 $sprites,
                 $attributes,
                 1023 - $i * 16,
