@@ -9,9 +9,7 @@ use RiverRaid\Image;
 
 final class TerrainProfile
 {
-    /**
-     * @param list<int> $values
-     */
+    /** @param list<int> $values */
     public function __construct(
         private readonly array $values,
     ) {

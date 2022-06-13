@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-/**
- * @psalm-immutable
- */
+/** @psalm-immutable */
 final class TerrainProfileRepository
 {
     /** @param list<TerrainProfile> $profiles */

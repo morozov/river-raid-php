@@ -26,7 +26,7 @@ final class LevelFragment
 
         for ($i = 0; $i < 2; $i++) {
             $entitySlots->getSlot(
-                $this->offset * 2 + $i
+                $this->offset * 2 + $i,
             )->render($sprites, $attributes, $y - $i * 8, $image);
         }
     }

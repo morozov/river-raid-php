@@ -110,7 +110,7 @@ final class EntitySlot
             Type::TANK => new Tank(
                 $type,
                 $this->getOrientation($definition),
-                $this->getLocation($definition)
+                $this->getLocation($definition),
             ),
             Type::FIGHTER => new Fighter(
                 $type,

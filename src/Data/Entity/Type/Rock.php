@@ -29,7 +29,7 @@ final class Rock implements Entity
             $image,
             $x,
             $y,
-            $attributeRepository->getRockAttributes()
+            $attributeRepository->getRockAttributes(),
         );
     }
 

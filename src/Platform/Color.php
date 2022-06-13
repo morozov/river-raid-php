@@ -29,7 +29,7 @@ final class Color
         return $image->allocateColor(
             $this->red * $brightness,
             $this->green * $brightness,
-            $this->blue * $brightness
+            $this->blue * $brightness,
         );
     }
 }

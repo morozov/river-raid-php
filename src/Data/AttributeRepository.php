@@ -6,9 +6,7 @@ namespace RiverRaid\Data;
 
 use RiverRaid\Platform\Attributes;
 
-/**
- * @psalm-immutable
- */
+/** @psalm-immutable */
 final class AttributeRepository
 {
     public function __construct(

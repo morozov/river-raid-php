@@ -7,9 +7,7 @@ namespace RiverRaid\Data;
 use RiverRaid\Data\Entity\Property\Orientation;
 use RiverRaid\Data\Entity\Type;
 
-/**
- * @psalm-immutable
- */
+/** @psalm-immutable */
 final class SpriteRepository
 {
     /**

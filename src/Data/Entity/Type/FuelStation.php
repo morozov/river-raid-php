@@ -22,7 +22,7 @@ final class FuelStation implements Entity
             $image,
             $x,
             $y,
-            $attributeRepository->getFuelStationAttributes()
+            $attributeRepository->getFuelStationAttributes(),
         );
     }
 

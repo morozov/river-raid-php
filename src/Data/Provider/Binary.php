@@ -156,7 +156,7 @@ final class Binary implements Provider
             $this->read3By1EnemyBytes(),
             $this->readBalloonBytes(),
             $this->readFuelStationSprite(),
-            $this->readRockSprites()
+            $this->readRockSprites(),
         );
     }
 
@@ -198,9 +198,7 @@ final class Binary implements Provider
         );
     }
 
-    /**
-     * @return list<list<Sprite>>
-     */
+    /** @return list<list<Sprite>> */
     private function read3By1EnemyBytes(): array
     {
         $this->seek(self::ADDRESS_SPRITE_3BY1_ENEMY);
@@ -213,7 +211,7 @@ final class Binary implements Provider
             for ($type = 1; $type <= self::SIZE_TYPE_3BY1_ENEMY; $type++) {
                 $orientationBytes[] = new Sprite(
                     3,
-                    $this->readBytes(self::SIZE_SPRITE_3BY1_ENEMY)
+                    $this->readBytes(self::SIZE_SPRITE_3BY1_ENEMY),
                 );
                 $this->advance(self::SIZE_SPRITE_3BY1_ENEMY * (self::SIZE_SPRITE_FRAMES - 1));
             }
@@ -233,7 +231,7 @@ final class Binary implements Provider
 
         return new Sprite(
             $width,
-            $this->readBytes($size)
+            $this->readBytes($size),
         );
     }
 
@@ -245,13 +243,11 @@ final class Binary implements Provider
 
         return new Sprite(
             $width,
-            $this->readBytes(self::SIZE_SPRITE_FUEL_STATION)
+            $this->readBytes(self::SIZE_SPRITE_FUEL_STATION),
         );
     }
 
-    /**
-     * @return list<Sprite>
-     */
+    /** @return list<Sprite> */
     private function readRockSprites(): array
     {
         $size  = $this->seekAndReadByte(self::ADDRESS_SPRITE_ROCK_SIZE);
@@ -264,7 +260,7 @@ final class Binary implements Provider
         for ($i = 0; $i < self::SIZE_SPRITE_ROCKS; $i++) {
             $sprites[] = new Sprite(
                 $width,
-                $this->readBytes($size)
+                $this->readBytes($size),
             );
         }
 
@@ -304,17 +300,13 @@ final class Binary implements Provider
         return array_values($bytes);
     }
 
-    /**
-     * @return positive-int
-     */
+    /** @return positive-int */
     private function readByte(): int
     {
         return $this->readBytes(1)[0];
     }
 
-    /**
-     * @return positive-int
-     */
+    /** @return positive-int */
     private function seekAndReadByte(int $address): int
     {
         $this->seek($address);

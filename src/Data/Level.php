@@ -25,14 +25,14 @@ final class Level
     ): void {
         for ($i = 0; $i < self::SIZE_LEVEL_FRAGMENTS; $i++) {
             (new LevelFragment(
-                $this->rotateFragmentOffset($this->offset * self::SIZE_LEVEL_FRAGMENTS + $i)
+                $this->rotateFragmentOffset($this->offset * self::SIZE_LEVEL_FRAGMENTS + $i),
             ))->render(
                 $terrainFragments,
                 $entitySlots,
                 $sprites,
                 $attributes,
                 1023 - $i * 16,
-                $image
+                $image,
             );
         }
     }

@@ -22,7 +22,7 @@ final class Balloon implements Entity
             $image,
             $x,
             $y,
-            $attributeRepository->getBalloonAttributes()
+            $attributeRepository->getBalloonAttributes(),
         );
     }
 
