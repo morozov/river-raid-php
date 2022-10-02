@@ -7,9 +7,9 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^10.0.0",
-        "phpstan/phpstan": "^1.7",
-        "phpstan/phpstan-strict-rules": "^1.1",
-        "vimeo/psalm": "^4.16"
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-strict-rules": "^1.4",
+        "vimeo/psalm": "^4.27"
     },
     "config": {
         "platform": {
