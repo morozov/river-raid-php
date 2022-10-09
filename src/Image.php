@@ -12,6 +12,7 @@ use function imagecolorat;
 use function imagecreatetruecolor;
 use function imagedestroy;
 use function imagefill;
+use function imagefilledrectangle;
 use function imageline;
 use function imagepng;
 use function imagesetpixel;
@@ -69,6 +70,11 @@ final class Image
     public function drawHorizontalLine(int $x1, int $x2, int $y, int $color): void
     {
         imageline($this->image, $x1, $y, $x2, $y, $color);
+    }
+
+    public function drawRectangle(int $x1, int $y1, int $x2, int $y2, int $color): void
+    {
+        imagefilledrectangle($this->image, $x1, $y1, $x2, $y2, $color);
     }
 
     public function save(string $path): void

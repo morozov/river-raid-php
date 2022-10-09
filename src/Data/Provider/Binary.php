@@ -15,7 +15,10 @@ use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Data\TerrainFragment;
 use RiverRaid\Data\TerrainFragmentRepository;
 use RiverRaid\Data\TerrainProfile;
+use RiverRaid\Data\TerrainProfile\CanalTerrainProfile;
+use RiverRaid\Data\TerrainProfile\RegularTerrainProfile;
 use RiverRaid\Data\TerrainProfile\RenderingMode;
+use RiverRaid\Data\TerrainProfile\RoadAndBridgeTerrainProfile;
 use RiverRaid\Data\TerrainProfileRepository;
 use RiverRaid\Platform\Attributes;
 use RuntimeException;
@@ -51,6 +54,8 @@ final class Binary implements Provider
     private const ADDRESS_SPRITE_ROCK_ATTRIBUTES = 0x6FE0;
     private const ADDRESS_SPRITE_ROCK_PIXELS     = 0x84A1;
 
+    private const ADDRESS_SPRITE_CANAL = 0x8331;
+
     private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
     private const SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
     private const SIZE_LEVELS                  = 0x30;
@@ -62,6 +67,7 @@ final class Binary implements Provider
     private const SIZE_SPRITE_FUEL_STATION = 0x32;
     private const SIZE_SPRITE_ROCKS        = 0x04;
     private const SIZE_SPRITE_FRAMES       = 0x04;
+    private const SIZE_SPRITE_CANAL        = 0x20;
     private const SIZE_TYPE_3BY1_ENEMY     = 0x05;
     private const SIZE_TERRAIN_FRAGMENT    = 0x04;
     private const SIZE_TERRAIN_PROFILE     = 0x10;
@@ -166,7 +172,7 @@ final class Binary implements Provider
             new Attributes(0x0E),
             new Attributes(0x0D),
             new Attributes(0x20),
-            new Attributes(0x01),
+            new Attributes(0x04),
             new Attributes(0x0C),
             new Attributes(
                 $this->seekAndReadByte(self::ADDRESS_SPRITE_BALLOON_ATTRIBUTES),
@@ -182,9 +188,14 @@ final class Binary implements Provider
 
     private function readTerrainProfile(): TerrainProfile
     {
-        return new TerrainProfile(
-            $this->readBytes(self::SIZE_TERRAIN_PROFILE),
-        );
+        $bytes = $this->readBytes(self::SIZE_TERRAIN_PROFILE);
+
+        return match ($bytes[0]) {
+            0x80,
+            0xE0 => new CanalTerrainProfile(),
+            0xC0 => new RoadAndBridgeTerrainProfile(),
+            default => new RegularTerrainProfile($bytes),
+        };
     }
 
     private function readIslandFragment(TerrainProfileRepository $terrainProfileRepository): IslandFragment
@@ -265,6 +276,14 @@ final class Binary implements Provider
         }
 
         return $sprites;
+    }
+
+    /** @return list<positive-int> */
+    public function readCanalPixels(): array
+    {
+        $this->seek(self::ADDRESS_SPRITE_CANAL);
+
+        return $this->readBytes(self::SIZE_SPRITE_CANAL);
     }
 
     private function seek(int $address): void
