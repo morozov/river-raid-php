@@ -59,11 +59,7 @@ final class EntitySlot
         $this->entity = $this->newEntity($definition);
     }
 
-    public function isEmpty(): bool
-    {
-        return $this->entity === null;
-    }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function toString(): string
     {
         if ($this->entity === null) {

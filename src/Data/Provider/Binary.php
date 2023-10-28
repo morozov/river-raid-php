@@ -54,8 +54,6 @@ final class Binary implements Provider
     private const ADDRESS_SPRITE_ROCK_ATTRIBUTES = 0x6FE0;
     private const ADDRESS_SPRITE_ROCK_PIXELS     = 0x84A1;
 
-    private const ADDRESS_SPRITE_CANAL = 0x8331;
-
     private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
     private const SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
     private const SIZE_LEVELS                  = 0x30;
@@ -67,7 +65,6 @@ final class Binary implements Provider
     private const SIZE_SPRITE_FUEL_STATION = 0x32;
     private const SIZE_SPRITE_ROCKS        = 0x04;
     private const SIZE_SPRITE_FRAMES       = 0x04;
-    private const SIZE_SPRITE_CANAL        = 0x20;
     private const SIZE_TYPE_3BY1_ENEMY     = 0x05;
     private const SIZE_TERRAIN_FRAGMENT    = 0x04;
     private const SIZE_TERRAIN_PROFILE     = 0x10;
@@ -276,14 +273,6 @@ final class Binary implements Provider
         }
 
         return $sprites;
-    }
-
-    /** @return list<positive-int> */
-    public function readCanalPixels(): array
-    {
-        $this->seek(self::ADDRESS_SPRITE_CANAL);
-
-        return $this->readBytes(self::SIZE_SPRITE_CANAL);
     }
 
     private function seek(int $address): void
