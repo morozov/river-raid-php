@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Entity\Type;
 
+use Override;
 use RiverRaid\Data\AttributeRepository;
 use RiverRaid\Data\Entity;
 use RiverRaid\Data\Entity\Property\Orientation;
@@ -22,6 +23,7 @@ abstract class ThreeByOneTileEnemy implements Entity
     ) {
     }
 
+    #[Override]
     public function render(
         SpriteRepository $spriteRepository,
         AttributeRepository $attributeRepository,
@@ -37,6 +39,7 @@ abstract class ThreeByOneTileEnemy implements Entity
         );
     }
 
+    #[Override]
     public function toString(): string
     {
         return sprintf('oriented %s', $this->orientation->toString());

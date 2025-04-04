@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\TerrainProfile;
 
+use Override;
 use RiverRaid\Data\TerrainProfile;
 use RiverRaid\Image;
 
 final class RoadAndBridgeTerrainProfile implements TerrainProfile
 {
+    #[Override]
     public function renderRiverBanks(
         int $byte2,
         int $byte3,
@@ -23,6 +25,7 @@ final class RoadAndBridgeTerrainProfile implements TerrainProfile
         $image->drawRectangle(144, $offset, 255, $offset - 15, $roadColor);
     }
 
+    #[Override]
     public function renderIsland(
         int $byte2,
         RenderingMode $renderingMode,

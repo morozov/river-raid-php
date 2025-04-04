@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Entity\Type;
 
+use Override;
 use RiverRaid\Data\AttributeRepository;
 use RiverRaid\Data\Entity;
 use RiverRaid\Data\SpriteRepository;
@@ -11,6 +12,7 @@ use RiverRaid\Image;
 
 final class Balloon implements Entity
 {
+    #[Override]
     public function render(
         SpriteRepository $spriteRepository,
         AttributeRepository $attributeRepository,
@@ -26,6 +28,7 @@ final class Balloon implements Entity
         );
     }
 
+    #[Override]
     public function toString(): string
     {
         return 'balloon';

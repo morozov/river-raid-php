@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\TerrainProfile;
 
+use Override;
 use RiverRaid\Data\TerrainProfile;
 use RiverRaid\Image;
 
@@ -15,6 +16,7 @@ final class RegularTerrainProfile implements TerrainProfile
     ) {
     }
 
+    #[Override]
     public function renderRiverBanks(
         int $byte2,
         int $byte3,
@@ -35,6 +37,7 @@ final class RegularTerrainProfile implements TerrainProfile
         }
     }
 
+    #[Override]
     public function renderIsland(
         int $byte2,
         RenderingMode $renderingMode,

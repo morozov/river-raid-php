@@ -21,11 +21,6 @@
                 <file name="src/Image.php"/>
             </errorLevel>
         </InvalidArgument>
-        <InvalidPropertyAssignmentValue>
-            <errorLevel type="suppress">
-                <file name="src/Image.php"/>
-            </errorLevel>
-        </InvalidPropertyAssignmentValue>
         <PossiblyUndefinedArrayOffset>
             <errorLevel type="suppress">
                 <file name="src/Data/Provider/Binary.php"/>

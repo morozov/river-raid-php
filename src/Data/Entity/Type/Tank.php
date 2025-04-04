@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Entity\Type;
 
+use Override;
 use RiverRaid\Data\AttributeRepository;
 use RiverRaid\Data\Entity\Property\Location;
 use RiverRaid\Data\Entity\Property\Orientation;
@@ -22,11 +23,13 @@ final class Tank extends ThreeByOneTileEnemy
         parent::__construct($type, $orientation);
     }
 
+    #[Override]
     public function toString(): string
     {
         return sprintf('tank on %s %s', $this->location->toString(), parent::toString());
     }
 
+    #[Override]
     protected function getAttributes(AttributeRepository $attributeRepository): Attributes
     {
         return $this->location->getTankAttributes($attributeRepository);

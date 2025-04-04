@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data\Provider;
 
+use Override;
 use RiverRaid\Data\AttributeRepository;
 use RiverRaid\Data\EntitySlot;
 use RiverRaid\Data\EntitySlotRepository;
@@ -84,6 +85,7 @@ final class Binary implements Provider
         $this->stream = $stream;
     }
 
+    #[Override]
     public function getTerrainFragments(
         TerrainProfileRepository $terrainProfileRepository,
         IslandFragmentRepository $islandFragmentRepository,
@@ -112,6 +114,7 @@ final class Binary implements Provider
         return new TerrainFragmentRepository($fragments);
     }
 
+    #[Override]
     public function getEntitySlots(): EntitySlotRepository
     {
         $this->seek(self::ADDRESS_LEVEL_ENTITY_SLOTS);
@@ -127,6 +130,7 @@ final class Binary implements Provider
         return new EntitySlotRepository($slots);
     }
 
+    #[Override]
     public function getTerrainProfiles(): TerrainProfileRepository
     {
         $this->seek(self::ADDRESS_TERRAIN_PROFILES);
@@ -140,6 +144,7 @@ final class Binary implements Provider
         return new TerrainProfileRepository($profiles);
     }
 
+    #[Override]
     public function getIslandFragments(TerrainProfileRepository $terrainProfileRepository): IslandFragmentRepository
     {
         $this->seek(self::ADDRESS_ISLAND_FRAGMENTS);
@@ -153,6 +158,7 @@ final class Binary implements Provider
         return new IslandFragmentRepository($fragments);
     }
 
+    #[Override]
     public function getSprites(): SpriteRepository
     {
         return new SpriteRepository(
@@ -163,6 +169,7 @@ final class Binary implements Provider
         );
     }
 
+    #[Override]
     public function getAttributes(): AttributeRepository
     {
         return new AttributeRepository(
