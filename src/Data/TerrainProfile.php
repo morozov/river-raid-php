@@ -14,13 +14,13 @@ interface TerrainProfile
         int $byte3,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void;
 
     public function renderIsland(
         int $byte2,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void;
 }

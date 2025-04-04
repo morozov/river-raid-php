@@ -13,7 +13,7 @@ interface Entity
         AttributeRepository $attributeRepository,
         Image $image,
         int $x,
-        int $y
+        int $y,
     ): void;
 
     public function toString(): string;

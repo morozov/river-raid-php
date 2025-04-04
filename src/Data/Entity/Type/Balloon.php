@@ -16,7 +16,7 @@ final class Balloon implements Entity
         AttributeRepository $attributeRepository,
         Image $image,
         int $x,
-        int $y
+        int $y,
     ): void {
         $spriteRepository->getBalloonSprite()->render(
             $image,

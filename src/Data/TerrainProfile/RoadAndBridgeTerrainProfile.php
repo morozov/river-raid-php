@@ -14,7 +14,7 @@ final class RoadAndBridgeTerrainProfile implements TerrainProfile
         int $byte3,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void {
         $roadColor   = $image->allocateColor(197, 197, 197);
         $bridgeColor = $image->allocateColor(197, 197, 0);
@@ -27,7 +27,7 @@ final class RoadAndBridgeTerrainProfile implements TerrainProfile
         int $byte2,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void {
     }
 }

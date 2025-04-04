@@ -20,7 +20,7 @@ final class RegularTerrainProfile implements TerrainProfile
         int $byte3,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void {
         $ink = $image->allocateColor(0, 197, 0);
 
@@ -39,7 +39,7 @@ final class RegularTerrainProfile implements TerrainProfile
         int $byte2,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void {
         $ink = $image->allocateColor(0, 197, 0);
 

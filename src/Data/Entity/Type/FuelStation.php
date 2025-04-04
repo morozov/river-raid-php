@@ -16,7 +16,7 @@ final class FuelStation implements Entity
         AttributeRepository $attributeRepository,
         Image $image,
         int $x,
-        int $y
+        int $y,
     ): void {
         $spriteRepository->getFuelStationSprite()->render(
             $image,

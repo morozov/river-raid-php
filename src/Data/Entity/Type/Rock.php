@@ -23,7 +23,7 @@ final class Rock implements Entity
         AttributeRepository $attributeRepository,
         Image $image,
         int $x,
-        int $y
+        int $y,
     ): void {
         $spriteRepository->getRockSprite($this->type)->render(
             $image,

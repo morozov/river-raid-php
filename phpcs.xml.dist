@@ -12,10 +12,12 @@
     <!-- Show progress of the run and show sniff names -->
     <arg value="ps"/>
 
-    <config name="php_version" value="70300"/>
+    <config name="php_version" value="80400"/>
 
     <file>bin</file>
     <file>src</file>
 
-    <rule ref="Doctrine"/>
+    <rule ref="Doctrine">
+        <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat.DisallowedShortNullable"/>
+    </rule>
 </ruleset>

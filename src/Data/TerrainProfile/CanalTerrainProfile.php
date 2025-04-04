@@ -14,7 +14,7 @@ final class CanalTerrainProfile implements TerrainProfile
         int $byte3,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void {
         $color = $image->allocateColor(0, 197, 0);
         $image->drawRectangle(0, $offset, 112, $offset - 15, $color);
@@ -25,7 +25,7 @@ final class CanalTerrainProfile implements TerrainProfile
         int $byte2,
         RenderingMode $renderingMode,
         int $offset,
-        Image $image
+        Image $image,
     ): void {
     }
 }

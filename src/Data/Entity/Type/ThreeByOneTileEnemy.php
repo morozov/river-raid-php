@@ -27,7 +27,7 @@ abstract class ThreeByOneTileEnemy implements Entity
         AttributeRepository $attributeRepository,
         Image $image,
         int $x,
-        int $y
+        int $y,
     ): void {
         $spriteRepository->getThreeByOneTileEnemySprite($this->orientation, $this->type)->render(
             $image,
