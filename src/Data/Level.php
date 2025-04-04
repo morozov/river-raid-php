@@ -6,13 +6,13 @@ namespace RiverRaid\Data;
 
 use RiverRaid\Image;
 
-final class Level
+final readonly class Level
 {
     private const int SIZE_LEVEL_FRAGMENTS = 0x40;
     private const int SIZE_TOTAL_FRAGMENTS = 0x40 * 0x30;
 
     public function __construct(
-        private readonly int $offset,
+        private int $offset,
     ) {
     }
 
@@ -24,9 +24,9 @@ final class Level
         Image $image,
     ): void {
         for ($i = 0; $i < self::SIZE_LEVEL_FRAGMENTS; $i++) {
-            (new LevelFragment(
+            new LevelFragment(
                 $this->rotateFragmentOffset($this->offset * self::SIZE_LEVEL_FRAGMENTS + $i),
-            ))->render(
+            )->render(
                 $terrainFragments,
                 $entitySlots,
                 $sprites,

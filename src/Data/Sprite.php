@@ -7,14 +7,14 @@ namespace RiverRaid\Data;
 use RiverRaid\Image;
 use RiverRaid\Platform\Attributes;
 
-final class Sprite
+final readonly class Sprite
 {
     private const int SIZE_TILE = 0x08;
 
     /** @param list<int> $bytes */
     public function __construct(
-        private readonly int $width,
-        private readonly array $bytes,
+        private int $width,
+        private array $bytes,
     ) {
     }
 

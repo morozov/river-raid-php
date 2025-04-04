@@ -13,12 +13,12 @@ use RiverRaid\Platform\Attributes;
 
 use function sprintf;
 
-final class Tank extends ThreeByOneTileEnemy
+final readonly class Tank extends ThreeByOneTileEnemy
 {
     public function __construct(
         Type $type,
         Orientation $orientation,
-        private readonly Location $location,
+        private Location $location,
     ) {
         parent::__construct($type, $orientation);
     }

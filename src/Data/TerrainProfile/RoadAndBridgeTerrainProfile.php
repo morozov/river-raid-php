@@ -8,7 +8,7 @@ use Override;
 use RiverRaid\Data\TerrainProfile;
 use RiverRaid\Image;
 
-final class RoadAndBridgeTerrainProfile implements TerrainProfile
+final readonly class RoadAndBridgeTerrainProfile implements TerrainProfile
 {
     #[Override]
     public function renderRiverBanks(

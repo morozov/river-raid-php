@@ -8,11 +8,11 @@ use Override;
 use RiverRaid\Data\TerrainProfile;
 use RiverRaid\Image;
 
-final class RegularTerrainProfile implements TerrainProfile
+final readonly class RegularTerrainProfile implements TerrainProfile
 {
     /** @param list<int> $values */
     public function __construct(
-        private readonly array $values,
+        private array $values,
     ) {
     }
 

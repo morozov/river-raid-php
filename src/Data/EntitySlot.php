@@ -23,7 +23,7 @@ use function sprintf;
 /**
  * Entity slot contains an entity definition and position. A slot can be empty.
  */
-final class EntitySlot
+final readonly class EntitySlot
 {
     /**
      * Bit that defines whether the entity is a rock or an interactive entity.
@@ -50,11 +50,11 @@ final class EntitySlot
      */
     private const int BITS_INTERACTIVE_TYPE = 0x07;
 
-    private readonly ?Entity $entity;
+    private ?Entity $entity;
 
     public function __construct(
         int $definition,
-        private readonly int $position,
+        private int $position,
     ) {
         $this->entity = $this->newEntity($definition);
     }

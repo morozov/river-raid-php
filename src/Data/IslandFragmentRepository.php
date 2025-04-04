@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-/** @psalm-immutable */
-final class IslandFragmentRepository
+final readonly class IslandFragmentRepository
 {
     /** @param list<IslandFragment> $fragments */
     public function __construct(
-        private readonly array $fragments,
+        private array $fragments,
     ) {
     }
 

@@ -6,15 +6,13 @@ namespace RiverRaid\Platform;
 
 use RiverRaid\Image;
 
-final class Attributes
+final readonly class Attributes
 {
     private const int BRIGHTNESS = 197;
 
-    /** @psalm-immutable */
-    private readonly Color $inkColor;
+    private Color $inkColor;
 
-    /** @psalm-immutable */
-    private readonly Color $paperColor;
+    private Color $paperColor;
 
     public function __construct(int $attributes)
     {

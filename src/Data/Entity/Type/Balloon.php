@@ -10,7 +10,7 @@ use RiverRaid\Data\Entity;
 use RiverRaid\Data\SpriteRepository;
 use RiverRaid\Image;
 
-final class Balloon implements Entity
+final readonly class Balloon implements Entity
 {
     #[Override]
     public function render(

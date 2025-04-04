@@ -9,7 +9,7 @@ use RiverRaid\Data\Entity\Type\Helicopter as BaseHelicopter;
 
 use function sprintf;
 
-final class AdvancedHelicopter extends BaseHelicopter
+final readonly class AdvancedHelicopter extends BaseHelicopter
 {
     #[Override]
     public function toString(): string

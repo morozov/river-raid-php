@@ -6,10 +6,10 @@ namespace RiverRaid\Data;
 
 use RiverRaid\Image;
 
-final class LevelFragment
+final readonly class LevelFragment
 {
     public function __construct(
-        private readonly int $offset,
+        private int $offset,
     ) {
     }
 

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace RiverRaid\Data;
 
-/** @psalm-immutable */
-final class TerrainProfileRepository
+final readonly class TerrainProfileRepository
 {
     /** @param list<TerrainProfile> $profiles */
     public function __construct(
-        private readonly array $profiles,
+        private array $profiles,
     ) {
     }
 

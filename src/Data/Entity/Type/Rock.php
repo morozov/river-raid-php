@@ -12,10 +12,10 @@ use RiverRaid\Image;
 
 use function sprintf;
 
-final class Rock implements Entity
+final readonly class Rock implements Entity
 {
     public function __construct(
-        private readonly int $type,
+        private int $type,
     ) {
     }
 

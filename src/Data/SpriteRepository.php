@@ -7,18 +7,17 @@ namespace RiverRaid\Data;
 use RiverRaid\Data\Entity\Property\Orientation;
 use RiverRaid\Data\Entity\Type;
 
-/** @psalm-immutable */
-final class SpriteRepository
+final readonly class SpriteRepository
 {
     /**
      * @param list<list<Sprite>> $threeByOneTileEnemies
      * @param list<Sprite>       $rocks
      */
     public function __construct(
-        private readonly array $threeByOneTileEnemies,
-        private readonly Sprite $balloon,
-        private readonly Sprite $fuelStation,
-        private readonly array $rocks,
+        private array $threeByOneTileEnemies,
+        private Sprite $balloon,
+        private Sprite $fuelStation,
+        private array $rocks,
     ) {
     }
 

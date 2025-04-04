@@ -7,14 +7,14 @@ namespace RiverRaid\Data;
 use RiverRaid\Data\TerrainProfile\RenderingMode;
 use RiverRaid\Image;
 
-final class TerrainFragment
+final readonly class TerrainFragment
 {
     public function __construct(
-        private readonly TerrainProfile $terrainProfile,
-        private readonly int $byte2,
-        private readonly int $byte3,
-        private readonly RenderingMode $renderingMode,
-        private readonly ?IslandFragment $islandFragment,
+        private TerrainProfile $terrainProfile,
+        private int $byte2,
+        private int $byte3,
+        private RenderingMode $renderingMode,
+        private ?IslandFragment $islandFragment,
     ) {
     }
 

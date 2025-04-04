@@ -10,7 +10,7 @@ use RiverRaid\Platform\Attributes;
 
 use function sprintf;
 
-final class Fighter extends ThreeByOneTileEnemy
+final readonly class Fighter extends ThreeByOneTileEnemy
 {
     #[Override]
     public function toString(): string

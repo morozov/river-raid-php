@@ -6,25 +6,16 @@ namespace RiverRaid\Platform;
 
 use RiverRaid\Image;
 
-final class Color
+final readonly class Color
 {
-    /**
-     * @psalm-immutable
-     * @var int<0, 1>
-     */
-    private readonly int $blue;
+    /** @var int<0, 1> */
+    private int $blue;
 
-    /**
-     * @psalm-immutable
-     * @var int<0, 1>
-     */
-    private readonly int $red;
+    /** @var int<0, 1> */
+    private int $red;
 
-    /**
-     * @psalm-immutable
-     * @var int<0, 1>
-     */
-    private readonly int $green;
+    /** @var int<0, 1> */
+    private int $green;
 
     public function __construct(int $color)
     {
