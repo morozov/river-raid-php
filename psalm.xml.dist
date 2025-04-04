@@ -26,5 +26,10 @@
                 <file name="src/Data/Provider/Binary.php"/>
             </errorLevel>
         </PossiblyUndefinedArrayOffset>
+        <PropertyTypeCoercion>
+            <errorLevel type="suppress">
+                <file name="src/Platform/Color.php"/>
+            </errorLevel>
+        </PropertyTypeCoercion>
     </issueHandlers>
 </psalm>

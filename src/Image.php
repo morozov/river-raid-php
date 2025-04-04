@@ -21,6 +21,10 @@ final class Image
 {
     private readonly GdImage $image;
 
+    /**
+     * @param positive-int $width
+     * @param positive-int $height
+     */
     public function __construct(int $width, int $height)
     {
         $image = imagecreatetruecolor($width, $height);
@@ -40,6 +44,11 @@ final class Image
         imagedestroy($this->image);
     }
 
+    /**
+     * @param int<0, 255> $red
+     * @param int<0, 255> $green
+     * @param int<0, 255> $blue
+     */
     public function allocateColor(int $red, int $green, int $blue): int
     {
         $color = imagecolorallocate($this->image, $red, $green, $blue);
