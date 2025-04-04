@@ -35,41 +35,41 @@ use const SEEK_CUR;
 
 final class Binary implements Provider
 {
-    private const ADDRESS_ISLAND_FRAGMENTS   = 0xC600;
-    private const ADDRESS_LEVEL_TERRAIN      = 0x9500;
-    private const ADDRESS_TERRAIN_PROFILES   = 0x8063;
-    private const ADDRESS_LEVEL_ENTITY_SLOTS = 0xC800;
-    private const ADDRESS_SPRITE_3BY1_ENEMY  = 0x85B3;
+    private const int ADDRESS_ISLAND_FRAGMENTS   = 0xC600;
+    private const int ADDRESS_LEVEL_TERRAIN      = 0x9500;
+    private const int ADDRESS_TERRAIN_PROFILES   = 0x8063;
+    private const int ADDRESS_LEVEL_ENTITY_SLOTS = 0xC800;
+    private const int ADDRESS_SPRITE_3BY1_ENEMY  = 0x85B3;
 
-    private const ADDRESS_SPRITE_BALLOON_SIZE       = 0x7083;
-    private const ADDRESS_SPRITE_BALLOON_WIDTH      = 0x7086;
-    private const ADDRESS_SPRITE_BALLOON_ATTRIBUTES = 0x7088;
-    private const ADDRESS_SPRITE_BALLOON_PIXELS     = 0x8972;
+    private const int ADDRESS_SPRITE_BALLOON_SIZE       = 0x7083;
+    private const int ADDRESS_SPRITE_BALLOON_WIDTH      = 0x7086;
+    private const int ADDRESS_SPRITE_BALLOON_ATTRIBUTES = 0x7088;
+    private const int ADDRESS_SPRITE_BALLOON_PIXELS     = 0x8972;
 
-    private const ADDRESS_SPRITE_FUEL_STATION_WIDTH      = 0x7064;
-    private const ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES = 0x7066;
-    private const ADDRESS_SPRITE_FUEL_STATION_PIXELS     = 0x8A86;
+    private const int ADDRESS_SPRITE_FUEL_STATION_WIDTH      = 0x7064;
+    private const int ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES = 0x7066;
+    private const int ADDRESS_SPRITE_FUEL_STATION_PIXELS     = 0x8A86;
 
-    private const ADDRESS_SPRITE_ROCK_SIZE       = 0x6FC3;
-    private const ADDRESS_SPRITE_ROCK_WIDTH      = 0x6FDE;
-    private const ADDRESS_SPRITE_ROCK_ATTRIBUTES = 0x6FE0;
-    private const ADDRESS_SPRITE_ROCK_PIXELS     = 0x84A1;
+    private const int ADDRESS_SPRITE_ROCK_SIZE       = 0x6FC3;
+    private const int ADDRESS_SPRITE_ROCK_WIDTH      = 0x6FDE;
+    private const int ADDRESS_SPRITE_ROCK_ATTRIBUTES = 0x6FE0;
+    private const int ADDRESS_SPRITE_ROCK_PIXELS     = 0x84A1;
 
-    private const SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
-    private const SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
-    private const SIZE_LEVELS                  = 0x30;
+    private const int SIZE_LEVEL_TERRAIN_FRAGMENTS = 0x40;
+    private const int SIZE_LEVEL_ENTITY_SLOTS      = 0x80;
+    private const int SIZE_LEVELS                  = 0x30;
 
-    private const SIZE_ISLAND_FRAGMENT     = 0x03;
-    private const SIZE_ISLAND_FRAGMENTS    = 0x23;
-    private const SIZE_ENTITY_SLOT         = 0x02;
-    private const SIZE_SPRITE_3BY1_ENEMY   = 0x18;
-    private const SIZE_SPRITE_FUEL_STATION = 0x32;
-    private const SIZE_SPRITE_ROCKS        = 0x04;
-    private const SIZE_SPRITE_FRAMES       = 0x04;
-    private const SIZE_TYPE_3BY1_ENEMY     = 0x05;
-    private const SIZE_TERRAIN_FRAGMENT    = 0x04;
-    private const SIZE_TERRAIN_PROFILE     = 0x10;
-    private const SIZE_TERRAIN_PROFILES    = 0x0F;
+    private const int SIZE_ISLAND_FRAGMENT     = 0x03;
+    private const int SIZE_ISLAND_FRAGMENTS    = 0x23;
+    private const int SIZE_ENTITY_SLOT         = 0x02;
+    private const int SIZE_SPRITE_3BY1_ENEMY   = 0x18;
+    private const int SIZE_SPRITE_FUEL_STATION = 0x32;
+    private const int SIZE_SPRITE_ROCKS        = 0x04;
+    private const int SIZE_SPRITE_FRAMES       = 0x04;
+    private const int SIZE_TYPE_3BY1_ENEMY     = 0x05;
+    private const int SIZE_TERRAIN_FRAGMENT    = 0x04;
+    private const int SIZE_TERRAIN_PROFILE     = 0x10;
+    private const int SIZE_TERRAIN_PROFILES    = 0x0F;
 
     /** @var resource */
     private $stream;

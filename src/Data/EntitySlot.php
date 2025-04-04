@@ -28,27 +28,27 @@ final class EntitySlot
     /**
      * Bit that defines whether the entity is a rock or an interactive entity.
      */
-    private const BIT_ROCK = 3;
+    private const int BIT_ROCK = 3;
 
     /**
      * Bit that defines tank location.
      */
-    private const BIT_TANK_LOCATION = 5;
+    private const int BIT_TANK_LOCATION = 5;
 
     /**
      * Bit that defines the entity orientation (left or right), if applicable.
      */
-    private const BIT_ORIENTATION = 6;
+    private const int BIT_ORIENTATION = 6;
 
     /**
      * Bits that define the rock type.
      */
-    private const BITS_ROCK_TYPE = 0x03;
+    private const int BITS_ROCK_TYPE = 0x03;
 
     /**
      * Bits that define the interactive entity type.
      */
-    private const BITS_INTERACTIVE_TYPE = 0x07;
+    private const int BITS_INTERACTIVE_TYPE = 0x07;
 
     private readonly ?Entity $entity;
 

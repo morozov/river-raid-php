@@ -18,6 +18,6 @@
     <file>src</file>
 
     <rule ref="Doctrine">
-        <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat.DisallowedShortNullable"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DNFTypeHintFormat.DisallowedShortNullable"/>
     </rule>
 </ruleset>

@@ -8,7 +8,7 @@ use RiverRaid\Image;
 
 final class Attributes
 {
-    private const BRIGHTNESS = 197;
+    private const int BRIGHTNESS = 197;
 
     /** @psalm-immutable */
     private readonly Color $inkColor;

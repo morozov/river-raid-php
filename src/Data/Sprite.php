@@ -9,7 +9,7 @@ use RiverRaid\Platform\Attributes;
 
 final class Sprite
 {
-    private const SIZE_TILE = 0x08;
+    private const int SIZE_TILE = 0x08;
 
     /** @param list<int> $bytes */
     public function __construct(

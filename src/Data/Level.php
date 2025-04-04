@@ -8,8 +8,8 @@ use RiverRaid\Image;
 
 final class Level
 {
-    private const SIZE_LEVEL_FRAGMENTS = 0x40;
-    private const SIZE_TOTAL_FRAGMENTS = 0x40 * 0x30;
+    private const int SIZE_LEVEL_FRAGMENTS = 0x40;
+    private const int SIZE_TOTAL_FRAGMENTS = 0x40 * 0x30;
 
     public function __construct(
         private readonly int $offset,
