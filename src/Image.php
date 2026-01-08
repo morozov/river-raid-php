@@ -10,7 +10,6 @@ use RuntimeException;
 use function imagecolorallocate;
 use function imagecolorat;
 use function imagecreatetruecolor;
-use function imagedestroy;
 use function imagefill;
 use function imagefilledrectangle;
 use function imageline;
@@ -37,11 +36,6 @@ final class Image
 
         $paper = $this->allocateColor(0, 0, 197);
         imagefill($this->image, 0, 0, $paper);
-    }
-
-    public function __destruct()
-    {
-        imagedestroy($this->image);
     }
 
     /**
