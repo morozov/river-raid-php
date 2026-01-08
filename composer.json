@@ -6,7 +6,7 @@
         "ext-gd": "*"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^13.0",
+        "doctrine/coding-standard": "^14.0",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
         "vimeo/psalm": "^6.10"
