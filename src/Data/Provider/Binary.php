@@ -173,18 +173,18 @@ final class Binary implements Provider
     public function getAttributes(): AttributeRepository
     {
         return new AttributeRepository(
-            new Attributes(0x0E),
-            new Attributes(0x0D),
-            new Attributes(0x20),
-            new Attributes(0x04),
-            new Attributes(0x0C),
-            new Attributes(
+            helicopter: new Attributes(0x0E),
+            ship: new Attributes(0x0D),
+            tankOnBank: new Attributes(0x20),
+            tankOnBridge: new Attributes(0x04),
+            fighter: new Attributes(0x0C),
+            balloon: new Attributes(
                 $this->seekAndReadByte(self::ADDRESS_SPRITE_BALLOON_ATTRIBUTES),
             ),
-            new Attributes(
+            fuelStation: new Attributes(
                 $this->seekAndReadByte(self::ADDRESS_SPRITE_FUEL_STATION_ATTRIBUTES),
             ),
-            new Attributes(
+            rock: new Attributes(
                 $this->seekAndReadByte(self::ADDRESS_SPRITE_ROCK_ATTRIBUTES),
             ),
         );
